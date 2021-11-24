@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:slider_captcha/logic/slider_captcha_cubit.dart';
+import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
 import 'package:slider_captcha/presentation/widgets/pizzule_path.dart';
 
 class SliderPanel extends StatelessWidget {

@@ -5,6 +5,7 @@ abstract class SliderCaptchaState extends Equatable {
   const SliderCaptchaState(this.offsetMove);
 
   final double offsetMove;
+
 }
 
 class SliderCaptchaLoading extends SliderCaptchaState {
@@ -21,4 +22,14 @@ class SliderCaptchaMove extends SliderCaptchaState {
   @override
   // TODO: implement props
   List<Object?> get props => [offsetMove];
+}
+
+
+class SliderCaptchaLock extends SliderCaptchaState{
+  const SliderCaptchaLock(this.timer) : super(0);
+  final int timer;
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timer];
+
 }
