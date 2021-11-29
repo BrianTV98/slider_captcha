@@ -37,8 +37,8 @@ class SliderCaptcha extends StatelessWidget {
                     image: image)
             ),
 
-            const TimerTitle(title: 'Vui lòng thử lại sau'),
-
+            // const TimerTitle(title: 'Vui lòng thử lại sau'),
+            //
             const SliderBar(title: 'Trượt để xác thực'),
           ],
         ),

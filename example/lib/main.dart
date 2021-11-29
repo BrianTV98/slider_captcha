@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:slider_captcha/presentation/screens/slider_captcha.dart';
+import 'package:slider_captcha/presentation/screens/slider_captcha_extention.dart';
+import 'package:slider_captcha/self.dart';
 
 void main() {
   runApp(const MyApp());
@@ -69,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: SliderCaptcha(
                 image: Image.asset(
-                  'assets/image.jpg',
+                  'assets/image.jpeg',
                   fit: BoxFit.fitWidth,
                 ),
                 onSuccess: () => showMyDialog(context),
