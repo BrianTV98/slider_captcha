@@ -14,7 +14,7 @@ dependencies:
 
 
 ## Demo
-![Showscase gif](https://github.com/BrianTV98/flash_card/blob/main/demo/slider_captcha.gif)
+![Showscase gif](https://github.com/BrianTV98/slider_captcha/blob/main/demo/slider_captcha.gif)
 ## Code Example
 
 ```
@@ -29,7 +29,7 @@ dependencies:
 ```
 
 ## Demo
-![Showscase gif](https://github.com/BrianTV98/flash_card/blob/main/demo/slider_captcha_extention.gif)
+![Showscase gif](https://github.com/BrianTV98/slider_captcha/blob/main/demo/slider_captcha_extention.gif)
 ```
    SliderCaptchaExtension(
          image: Image.asset(
