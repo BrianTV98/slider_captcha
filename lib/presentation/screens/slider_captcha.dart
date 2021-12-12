@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
-import 'package:slider_captcha/presentation/widgets/extention/timer_title.dart';
 import 'package:slider_captcha/presentation/widgets/slider_bar.dart';
 import 'package:slider_captcha/presentation/widgets/slider_panel.dart';
 
@@ -37,8 +36,6 @@ class SliderCaptcha extends StatelessWidget {
                     image: image)
             ),
 
-            // const TimerTitle(title: 'Vui lòng thử lại sau'),
-            //
             const SliderBar(title: 'Trượt để xác thực'),
           ],
         ),
