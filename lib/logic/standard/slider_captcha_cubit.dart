@@ -36,8 +36,6 @@ class SliderCaptchaCubit extends Cubit<SliderCaptchaState> {
 
   int wrongNumber = 0;
 
-
-
   /// control time
   StreamSubscription<int>? _tickerSubscription;
 

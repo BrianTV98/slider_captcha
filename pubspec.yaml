@@ -1,8 +1,8 @@
 name: slider_captcha
-description: slide captcha the same as binance,
-version: 0.0.3
+description: slide captcha the same as binance, allow drag and drop for validation
+version: 0.0.5
 publish_to: https://pub.dev/
-homepage: https://github.com/BrianTV98/captcha/
+homepage: https://github.com/BrianTV98/slider_captcha/
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

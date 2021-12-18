@@ -3,9 +3,10 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-class PuzzlePiecePainter extends CustomPainter {
 
-  PuzzlePiecePainter(this.width, this.height, this.offsetX, this.offsetY,{ this.paintingStyle =PaintingStyle.stroke } );
+class PuzzlePiecePainter extends CustomPainter {
+  PuzzlePiecePainter(this.width, this.height, this.offsetX, this.offsetY,
+      {this.paintingStyle = PaintingStyle.stroke});
 
   final double width;
 
@@ -15,8 +16,7 @@ class PuzzlePiecePainter extends CustomPainter {
 
   final double offsetY;
 
-  final PaintingStyle  paintingStyle;
-
+  final PaintingStyle paintingStyle;
 
   @override
   Future<void> paint(Canvas canvas, Size size) async {
@@ -29,11 +29,11 @@ class PuzzlePiecePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) =>false;
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-Path getPiecePathCustom(Size size, double offsetX,double offsetY, double sizePart) {
-
+Path getPiecePathCustom(
+    Size size, double offsetX, double offsetY, double sizePart) {
   final double bumpSize = sizePart / 4;
 
   // offsetX = offsetX -sizePart;
@@ -44,8 +44,13 @@ Path getPiecePathCustom(Size size, double offsetX,double offsetY, double sizePar
   // top bump
   path.lineTo(offsetX + sizePart / 3, offsetY);
 
-  path.cubicTo(offsetX + sizePart / 6, offsetY - bumpSize, offsetX + sizePart / 6 * 5,
-      offsetY - bumpSize, offsetX + sizePart / 3 * 2, offsetY);
+  path.cubicTo(
+      offsetX + sizePart / 6,
+      offsetY - bumpSize,
+      offsetX + sizePart / 6 * 5,
+      offsetY - bumpSize,
+      offsetX + sizePart / 3 * 2,
+      offsetY);
 
   path.lineTo(offsetX + sizePart, offsetY);
 
@@ -69,8 +74,13 @@ Path getPiecePathCustom(Size size, double offsetX,double offsetY, double sizePar
   //   // left bump
   path.lineTo(offsetX, offsetY + sizePart / 3 * 2);
 
-  path.cubicTo(offsetX - bumpSize, offsetY + sizePart / 6 * 5, offsetX - bumpSize,
-      offsetY + sizePart / 6, offsetX, offsetY + sizePart / 3);
+  path.cubicTo(
+      offsetX - bumpSize,
+      offsetY + sizePart / 6 * 5,
+      offsetX - bumpSize,
+      offsetY + sizePart / 6,
+      offsetX,
+      offsetY + sizePart / 3);
 
   path.close();
 
@@ -79,24 +89,18 @@ Path getPiecePathCustom(Size size, double offsetX,double offsetY, double sizePar
 
 // this class is used to clip the image to the puzzle piece path
 class PuzzlePieceClipper extends CustomClipper<Path> {
-  PuzzlePieceClipper(
-    this.height,
-    this.width,
-      this.x,
-      this.y
-  );
+  PuzzlePieceClipper(this.height, this.width, this.x, this.y);
 
   final double width;
   final double height;
 
   final double x;
 
-
   final double y;
 
   @override
   Path getClip(Size size) {
-    return getPiecePathCustom(size,x,y, width);
+    return getPiecePathCustom(size, x, y, width);
   }
 
   @override

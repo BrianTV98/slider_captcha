@@ -1,7 +1,7 @@
 part of 'slider_captcha_extension_cubit.dart';
 
 @immutable
-abstract class SliderCaptchaExtensionState  extends Equatable{
+abstract class SliderCaptchaExtensionState extends Equatable {
   const SliderCaptchaExtensionState(this.offsetX, this.offsetY);
 
   /// position of captcha on coordinates X
@@ -13,7 +13,6 @@ abstract class SliderCaptchaExtensionState  extends Equatable{
 
 /// in this state, will create captcha
 class SliderCaptchaExtensionLoad extends SliderCaptchaExtensionState {
-
   const SliderCaptchaExtensionLoad() : super(0, 0);
 
   @override
@@ -32,8 +31,7 @@ class SliderCaptchaExtensionMove extends SliderCaptchaExtensionState {
 }
 
 /// in this state, will lockUI
-class SliderCaptchaExtensionLock extends SliderCaptchaExtensionState{
-
+class SliderCaptchaExtensionLock extends SliderCaptchaExtensionState {
   const SliderCaptchaExtensionLock(this.timer) : super(0, 0);
 
   final int timer;
@@ -41,6 +39,4 @@ class SliderCaptchaExtensionLock extends SliderCaptchaExtensionState{
   @override
   // TODO: implement props
   List<Object?> get props => [timer];
-
 }
-

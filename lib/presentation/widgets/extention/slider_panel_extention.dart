@@ -17,12 +17,7 @@ class SliderPanelExtension extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        image,
-        _slice(context),
-        _captcha(context),
-        _lockUI(context)
-      ],
+      children: [image, _slice(context), _captcha(context), _lockUI(context)],
     );
   }
 
@@ -82,7 +77,7 @@ class SliderPanelExtension extends StatelessWidget {
   Widget _lockUI(BuildContext context) {
     return BlocBuilder<SliderCaptchaExtensionCubit,
         SliderCaptchaExtensionState>(builder: (context, state) {
-          debugPrint(state.toString());
+      debugPrint(state.toString());
       if (state is SliderCaptchaExtensionLock) {
         return AbsorbPointer(
           absorbing: true,
@@ -98,7 +93,7 @@ class SliderPanelExtension extends StatelessWidget {
           ),
         );
       }
-      return const  SizedBox();
+      return const SizedBox();
     });
   }
 }

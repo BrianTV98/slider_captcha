@@ -5,7 +5,6 @@ import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
 import '../pizzule_path.dart';
 
 class SliderPanel extends StatelessWidget {
-
   const SliderPanel({required this.image, this.sizeCaptcha = 50, Key? key})
       : super(key: key);
 
@@ -66,7 +65,6 @@ class SliderPanel extends StatelessWidget {
   }
 }
 
-
 class SliderAdapter extends StatelessWidget {
   const SliderAdapter({required this.child, this.reRender = false, Key? key})
       : super(key: key);
@@ -82,8 +80,7 @@ class SliderAdapter extends StatelessWidget {
       builder: (context, state) {
         final bloc = BlocProvider.of<SliderCaptchaCubit>(context);
         return child(
-            bloc.offsetX, bloc.offsetY,
-            state.offsetMove - bloc.offsetX);
+            bloc.offsetX, bloc.offsetY, state.offsetMove - bloc.offsetX);
       },
       buildWhen: (pre, current) => current is! SliderCaptchaLock,
     );

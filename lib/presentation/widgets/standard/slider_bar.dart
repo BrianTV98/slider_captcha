@@ -15,14 +15,10 @@ class SliderBar extends StatelessWidget {
     return _OutlineBorder(
       height: height,
       child: Stack(
-        children: <Widget>[
-          _title(),
-          _button()
-        ],
+        children: <Widget>[_title(), _button()],
       ),
     );
   }
-
 
   Widget _button() {
     return BlocBuilder<SliderCaptchaCubit, SliderCaptchaState>(
@@ -59,8 +55,8 @@ class SliderBar extends StatelessWidget {
     );
   }
 
-  Widget _title(){
-    return   Center(
+  Widget _title() {
+    return Center(
       child: Text(title, textAlign: TextAlign.center),
     );
   }
@@ -88,13 +84,11 @@ class SliderBar extends StatelessWidget {
           );
     }
   }
-
-
 }
 
 class _OutlineBorder extends StatelessWidget {
-  const _OutlineBorder({required this.height,
-    required this.child,Key? key}) : super(key: key);
+  const _OutlineBorder({required this.height, required this.child, Key? key})
+      : super(key: key);
 
   final double height;
 
@@ -110,10 +104,8 @@ class _OutlineBorder extends StatelessWidget {
           color: Colors.white,
           boxShadow: const <BoxShadow>[
             BoxShadow(offset: Offset(0, 0), blurRadius: 2, color: Colors.grey)
-          ]
-      ),
+          ]),
       child: child,
     );
   }
 }
-
