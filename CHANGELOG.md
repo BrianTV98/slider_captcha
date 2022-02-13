@@ -12,3 +12,9 @@
 
 ## 0.0.5
 * TODO: update homepage
+  
+##0.06
+  TODO: Update title for sliderBar
+  
+##0.07:
+  TODO: Update title style for sliderBar

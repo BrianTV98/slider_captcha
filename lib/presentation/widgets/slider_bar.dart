@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
 
 class SliderBar extends StatelessWidget {
-  const SliderBar({required this.title, this.height = 50, Key? key})
+  const SliderBar(
+      {required this.title, this.titleStyle, this.height = 50, Key? key})
       : super(key: key);
 
   final String title;
+
+  final TextStyle? titleStyle;
 
   final double height;
 
@@ -24,7 +27,7 @@ class SliderBar extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Center(
-            child: Text(title, textAlign: TextAlign.center),
+            child: Text(title, style: titleStyle, textAlign: TextAlign.center),
           ),
           BlocBuilder<SliderCaptchaCubit, SliderCaptchaState>(
             builder: (context, state) {

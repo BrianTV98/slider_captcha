@@ -8,7 +8,8 @@ class SliderCaptcha extends StatelessWidget {
   const SliderCaptcha(
       {required this.image,
       required this.onSuccess,
-      this.title = 'Trượt để xác thực',
+      this.title = 'Slide to authenticate',
+      this.titleStyle,
       this.captchaSize = 30,
       Key? key})
       : super(key: key);
@@ -18,6 +19,8 @@ class SliderCaptcha extends StatelessWidget {
   final void Function() onSuccess;
 
   final String title;
+
+  final TextStyle? titleStyle;
 
   final double captchaSize;
 
@@ -36,7 +39,10 @@ class SliderCaptcha extends StatelessWidget {
             SizedBox(
                 height: 200,
                 child: SliderPanel(sizeCaptcha: captchaSize, image: image)),
-            SliderBar(title: title),
+            SliderBar(
+              title: title,
+              titleStyle: titleStyle,
+            ),
           ],
         ),
       ),
