@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
             content: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Text('Xác thực thành công'),
+                Text('Authentication successful!'),
               ],
             ),
           );
@@ -66,7 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (context) {
           return Dialog(
-            child: Padding(
+            child: Container(
+              height: 280,
+              width: 280,
               padding: const EdgeInsets.all(8.0),
               child: SliderCaptcha(
                 image: Image.asset(
