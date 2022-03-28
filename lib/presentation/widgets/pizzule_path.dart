@@ -1,8 +1,32 @@
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import 'package:flutter/material.dart' hide Image;
+
+
+class CreateCaptChar {
+
+  static Future<Uint8List> create(
+      int width, int height, double offsetX, double offsetY) async {
+    PictureRecorder pictureRecorder = PictureRecorder();
+    Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    canvas.drawPath(
+        getPiecePathCustom(Size(width.toDouble(), height.toDouble()), offsetX,
+            offsetY, width.toDouble()),
+        paint);
+
+    // canvas.drawImage(image, offset, paint);
+    Picture picture = pictureRecorder.endRecording();
+    final img = await picture.toImage(300, 300);
+    final pngBytes = await img.toByteData(format:ImageByteFormat.png);
+    return Uint8List.view(pngBytes!.buffer);
+  }
+}
 
 class PuzzlePiecePainter extends CustomPainter {
   PuzzlePiecePainter(this.width, this.height, this.offsetX, this.offsetY,
@@ -20,12 +44,19 @@ class PuzzlePiecePainter extends CustomPainter {
 
   @override
   Future<void> paint(Canvas canvas, Size size) async {
+    // PictureRecorder pictureRecorder = PictureRecorder();
+    // Canvas canvas = Canvas(pictureRecorder);
+
     final Paint paint = Paint()
       ..color = Colors.blue
       ..style = paintingStyle
       ..strokeWidth = 3.0;
 
     canvas.drawPath(getPiecePathCustom(size, offsetX, offsetY, width), paint);
+    // Picture picture = pictureRecorder.endRecording();
+    //
+    // // Image image =
+    // imageGlobal = (await picture.toImage(width.toInt(), height.toInt())) as Image;
   }
 
   @override

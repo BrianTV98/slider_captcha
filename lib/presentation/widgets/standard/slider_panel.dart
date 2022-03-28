@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
-
+import 'package:slider_captcha/presentation/screens/slider_captcha.dart';
+import 'package:slider_captcha/presentation/widgets/captchar.dart';
 import '../pizzule_path.dart';
+import '../slide.dart';
 
 class SliderPanel extends StatelessWidget {
   const SliderPanel({required this.image, this.sizeCaptcha = 50, Key? key})
@@ -14,27 +14,29 @@ class SliderPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderAdapter(
-      child: (x, y, percent) => Stack(
-        children: [
-          _background(context),
-          _slice(context, x, y),
-          _captcha(context, x, y, percent),
-        ],
-      ),
+    return Stack(
+      children: [
+         ClipPath(child: image),
+         Slide( x: 150,y: 5, image: image, sizeCaptcha: sizeCaptcha,),
+         CaptChar(image: image, x: 150, y: 50, percent: 50, sizeCaptcha: sizeCaptcha)
+      ],
     );
   }
 
-  Widget _background(BuildContext context) {
-    return Positioned(
-      top: 0,
-      width: MediaQuery.of(context).size.width,
-      left: 0,
-      child: ClipPath(child: image),
-    );
-  }
+  // _background(context),
+  // _slice(context, x, y),
+  // _captcha(context, x, y, percent),
 
-  Widget _slice(BuildContext context, x, y) {
+  // Widget _background(BuildContext context) {
+  //   return Positioned(
+  //     top: 0,
+  //     width: MediaQuery.of(context).size.width,
+  //     left: 0,
+  //     child: ClipPath(child: image),
+  //   );
+  // }
+
+  Widget _slice(BuildContext context, double x, double y) {
     return Positioned(
       top: 0,
       width: MediaQuery.of(context).size.width,
@@ -61,28 +63,6 @@ class SliderPanel extends StatelessWidget {
             child: image),
         clipper: PuzzlePieceClipper(sizeCaptcha, sizeCaptcha, x, y),
       ),
-    );
-  }
-}
-
-class SliderAdapter extends StatelessWidget {
-  const SliderAdapter({required this.child, this.reRender = false, Key? key})
-      : super(key: key);
-
-  final Widget Function(double offsetX, double offsetY, double currentPosition)
-      child;
-
-  final bool reRender;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SliderCaptchaCubit, SliderCaptchaState>(
-      builder: (context, state) {
-        final bloc = BlocProvider.of<SliderCaptchaCubit>(context);
-        return child(
-            bloc.offsetX, bloc.offsetY, state.offsetMove - bloc.offsetX);
-      },
-      buildWhen: (pre, current) => current is! SliderCaptchaLock,
     );
   }
 }

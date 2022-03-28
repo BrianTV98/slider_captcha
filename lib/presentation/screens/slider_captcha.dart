@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:slider_captcha/logic/standard/slider_captcha_cubit.dart';
-import 'package:slider_captcha/presentation/widgets/slider_bar.dart';
-import 'package:slider_captcha/presentation/widgets/slider_panel.dart';
+import 'package:slider_captcha/logic/slider_controller.dart';
+import 'package:slider_captcha/presentation/widgets/pizzule_path.dart';
+
+import '../widgets/standard/slider_bar.dart';
+import '../widgets/standard/slider_panel.dart';
 
 class SliderCaptcha extends StatelessWidget {
   const SliderCaptcha(
@@ -26,25 +29,20 @@ class SliderCaptcha extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SliderController _sliderController = SliderController();
     return SafeArea(
-      child: BlocProvider(
-        create: (_) => SliderCaptchaCubit(
-            context: context,
-            height: 200,
-            sizeCaptcha: captchaSize,
-            onSuccess: onSuccess),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                height: 200,
-                child: SliderPanel(sizeCaptcha: captchaSize, image: image)),
-            SliderBar(
-              title: title,
-              titleStyle: titleStyle,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+              height: 200,
+              child: SliderPanel(sizeCaptcha: captchaSize, image: image)),
+          SliderBar(title: 'àdfa', sliderController: _sliderController,)
+          // SliderBar(
+          //   title: title,
+          //   titleStyle: titleStyle,
+          // ),
+        ],
       ),
     );
   }
