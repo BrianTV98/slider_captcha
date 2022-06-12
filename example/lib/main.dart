@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:slider_captcha/presentation/screens/slider_captcha_extention.dart';
-import 'package:slider_captcha/self.dart';
+import 'package:slider_captcha/slider_capchar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,14 +31,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final SliderController controller = SliderController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: IconButton(
-          icon: const Icon(Icons.add_shopping_cart),
-          onPressed: () => showCaptcha(context),
-        ),
-        body: const SizedBox());
+        // floatingActionButton: IconButton(
+        //   icon: const Icon(Icons.add_shopping_cart),
+        //   onPressed: () => showCaptcha(context),
+        // ),
+        body:  Center(
+          child: SliderCaptcha(
+            controller: controller,
+            image: Image.asset(
+              'assets/image.jpeg',
+              fit: BoxFit.fitWidth,
+            ),
+            onConfirm: (value){
+              debugPrint(value.toString());
+              Future.delayed(const Duration(seconds: 1)).then((value) {
+                 controller.create();
+              });
+            }
+          ),
+        ));
+
   }
 
   void showMyDialog(BuildContext context) {
@@ -74,8 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 image: Image.asset(
                   'assets/image.jpeg',
                   fit: BoxFit.fitWidth,
-                ),
-                onSuccess: () => showMyDialog(context),
+                ), onConfirm: (bool value) {  },
+                // onConfirm: () => showMyDialog(context),
               ),
             ),
           );
