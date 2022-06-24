@@ -4,23 +4,20 @@ import 'package:flutter/material.dart';
 
 import '../pizzule_path.dart';
 
-
 class SliderController {
-
   late VoidCallback create;
-
 }
 
 class SliderCaptcha extends StatefulWidget {
-  const SliderCaptcha({required this.image,
-    required this.onConfirm,
-    this.title = 'Slide to authenticate',
-    this.titleStyle,
-    this.captchaSize = 30,
-    this.controller,
-    Key? key})
+  const SliderCaptcha(
+      {required this.image,
+      required this.onConfirm,
+      this.title = 'Slide to authenticate',
+      this.titleStyle,
+      this.captchaSize = 30,
+      this.controller,
+      Key? key})
       : super(key: key);
-
 
   final Image image;
 
@@ -32,8 +29,7 @@ class SliderCaptcha extends StatefulWidget {
 
   final double captchaSize;
 
-   final SliderController? controller;
-
+  final SliderController? controller;
 
   @override
   State<SliderCaptcha> createState() => _SliderCaptchaState();
@@ -48,9 +44,7 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
 
   double answerY = 0;
 
-
   late SliderController controller;
-
 
   @override
   Widget build(BuildContext context) {
@@ -164,10 +158,9 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
   @override
   void initState() {
     super.initState();
-    if(widget.controller ==null){
+    if (widget.controller == null) {
       controller = SliderController();
-    }
-    else{
+    } else {
       controller = widget.controller!;
     }
 
@@ -215,7 +208,7 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
       }
     } else {
       if (widget.onConfirm != null) {
-        widget.onConfirm!(true);
+        widget.onConfirm!(false);
       }
     }
 
