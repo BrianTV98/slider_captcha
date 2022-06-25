@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:slider_captcha/slider_capchar.dart';
 
@@ -32,68 +31,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final SliderController controller = SliderController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // floatingActionButton: IconButton(
-        //   icon: const Icon(Icons.add_shopping_cart),
-        //   onPressed: () => showCaptcha(context),
-        // ),
-        body:  Center(
-          child: SliderCaptcha(
-            controller: controller,
-            image: Image.asset(
-              'assets/image.jpeg',
-              fit: BoxFit.fitWidth,
-            ),
-            onConfirm: (value){
-              debugPrint(value.toString());
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                 controller.create();
-              });
-            }
+      body: SafeArea(
+        child: SliderCaptcha(
+          controller: controller,
+          image: Image.asset(
+            'assets/image.jpeg',
+            fit: BoxFit.fitWidth,
           ),
-        ));
-
-  }
-
-  void showMyDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Icon(
-              Icons.check_circle_outline,
-              color: Colors.green,
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('Authentication successful!'),
-              ],
-            ),
-          );
-        });
-  }
-
-  void showCaptcha(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: Container(
-              height: 280,
-              width: 280,
-              padding: const EdgeInsets.all(8.0),
-              child: SliderCaptcha(
-                image: Image.asset(
-                  'assets/image.jpeg',
-                  fit: BoxFit.fitWidth,
-                ), onConfirm: (bool value) {  },
-                // onConfirm: () => showMyDialog(context),
-              ),
-            ),
-          );
-        });
+          onConfirm: (value) {
+            debugPrint(value.toString());
+            Future.delayed(const Duration(seconds: 1)).then(
+              (value) {
+                controller.create();
+              },
+            );
+          },
+        ),
+      ),
+    );
   }
 }

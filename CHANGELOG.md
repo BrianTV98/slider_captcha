@@ -18,3 +18,9 @@
   
 ##0.07:
   TODO: Update title style for sliderBar
+  
+## 0.08
+  TODO :
+     -Remove dependencies on other libraries
+     - Fix issue: #5
+  
