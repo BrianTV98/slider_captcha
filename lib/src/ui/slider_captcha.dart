@@ -37,7 +37,8 @@ class SliderCaptcha extends StatefulWidget {
   State<SliderCaptcha> createState() => _SliderCaptchaState();
 }
 
-class _SliderCaptchaState extends State<SliderCaptcha> {
+class _SliderCaptchaState extends State<SliderCaptcha>
+    with SingleTickerProviderStateMixin {
   double heightSliderBar = 50;
 
   double _offsetMove = 0;
@@ -48,6 +49,9 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
 
   late SliderController controller;
 
+  late Animation<double> animation;
+  late AnimationController animationController;
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -56,70 +60,65 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Stack(
-              children: [
-                TestSliderCaptchar(
-                  widget.image,
-                  PathTest(),
-                )
-
-                // _captcha(context, answerX, answerY),
-                // _slice(context, _offsetMove, answerY),
-              ],
+          GestureDetector(
+            onHorizontalDragStart: (DragStartDetails detail) {
+              debugPrint(detail.localPosition.toString());
+            },
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: _captcha(context, _offsetMove, answerY),
             ),
           ),
-          // Container(
-          //   height: heightSliderBar,
-          //   width: double.infinity,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(10),
-          //       color: Colors.red,
-          //       boxShadow: const <BoxShadow>[
-          //         BoxShadow(
-          //           offset: Offset(0, 0),
-          //           blurRadius: 2,
-          //           color: Colors.grey,
-          //         )
-          //       ]),
-          //   child: Stack(
-          //     children: <Widget>[
-          //       Center(
-          //         child: Text(widget.title,
-          //             style: widget.titleStyle, textAlign: TextAlign.center),
-          //       ),
-          //       Positioned(
-          //           left: _offsetMove,
-          //           top: 0,
-          //           height: 50,
-          //           width: 50,
-          //           child: GestureDetector(
-          //             onHorizontalDragStart: (DragStartDetails detail) {
-          //               _onDragStart(context, detail);
-          //             },
-          //             onHorizontalDragUpdate: (DragUpdateDetails detail) {
-          //               _onDragUpdate(context, detail);
-          //             },
-          //             onHorizontalDragEnd: (DragEndDetails detail) {
-          //               checkAnswer();
-          //             },
-          //             child: Container(
-          //               height: heightSliderBar,
-          //               width: heightSliderBar,
-          //               margin: const EdgeInsets.all(4),
-          //               decoration: BoxDecoration(
-          //                   borderRadius: BorderRadius.circular(5),
-          //                   color: Colors.white,
-          //                   boxShadow: const <BoxShadow>[
-          //                     BoxShadow(color: Colors.grey, blurRadius: 4)
-          //                   ]),
-          //               child: const Icon(Icons.arrow_forward_rounded),
-          //             ),
-          //           )),
-          //     ],
-          //   ),
-          // )
+          Container(
+            height: heightSliderBar,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.red,
+                boxShadow: const <BoxShadow>[
+                  BoxShadow(
+                    offset: Offset(0, 0),
+                    blurRadius: 2,
+                    color: Colors.grey,
+                  )
+                ]),
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Text(widget.title,
+                      style: widget.titleStyle, textAlign: TextAlign.center),
+                ),
+                Positioned(
+                    left: _offsetMove,
+                    top: 0,
+                    height: 50,
+                    width: 50,
+                    child: GestureDetector(
+                      onHorizontalDragStart: (DragStartDetails detail) {
+                        _onDragStart(context, detail);
+                      },
+                      onHorizontalDragUpdate: (DragUpdateDetails detail) {
+                        _onDragUpdate(context, detail);
+                      },
+                      onHorizontalDragEnd: (DragEndDetails detail) {
+                        checkAnswer();
+                      },
+                      child: Container(
+                        height: heightSliderBar,
+                        width: heightSliderBar,
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                            boxShadow: const <BoxShadow>[
+                              BoxShadow(color: Colors.grey, blurRadius: 4)
+                            ]),
+                        child: const Icon(Icons.arrow_forward_rounded),
+                      ),
+                    )),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -154,14 +153,7 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
     setState(() {
       _offsetMove = local.dx - heightSliderBar / 2;
     });
-  }
-
-  Widget _slice(BuildContext context, x, y) {
-    return CustomPaint(
-      foregroundPainter: PuzzlePiecePainter(
-          widget.captchaSize + 6, widget.captchaSize + 6, x + 10, y,
-          paintingStyle: PaintingStyle.fill),
-    );
+    debugPrint(_offsetMove.toString());
   }
 
   @override
@@ -174,6 +166,24 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
     }
 
     controller.create = reset;
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    animation = Tween<double>(begin: 1, end: 0).animate(animationController)
+      ..addListener(() {
+        setState(() {
+          _offsetMove = _offsetMove * animation.value;
+        });
+      })
+      ..addStatusListener((status) {
+
+        if (status == AnimationStatus.completed) {
+          animationController.reset();
+        }
+      }
+      );
+    answerX = -100;
+    answerX =-100;
   }
 
   @override
@@ -196,22 +206,22 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
     answerX = widget.captchaSize +
         Random().nextInt((width - 2 * widget.captchaSize).toInt());
 //
-    answerY = Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
+    answerY = MediaQuery.of(context).padding.top+ Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
   }
 
   Widget _captcha(BuildContext context, double x, double y) {
-    return ClipPath(
-      child: CustomPaint(
-          foregroundPainter: PuzzlePiecePainter(
-              widget.captchaSize + 6, widget.captchaSize + 6, x, y),
-          child: widget.image),
-      clipper: PuzzlePieceClipper(
-          widget.captchaSize + 6, widget.captchaSize + 6, x, y),
+    return TestSliderCaptChar(
+      widget.image,
+      PathTest(),
+      x,
+      y,
+      answerX,
+      answerY,
     );
   }
 
   void checkAnswer() {
-    if (answerX - 5 < (_offsetMove + 10) && (_offsetMove + 10) < answerX + 5) {
+    if (_offsetMove<answerX +10  &&_offsetMove>answerX -10  ) {
       if (widget.onConfirm != null) {
         widget.onConfirm!(true);
       }
@@ -225,68 +235,124 @@ class _SliderCaptchaState extends State<SliderCaptcha> {
   }
 
   void reset() {
-    _createUIInfo();
-    _offsetMove = 0;
-    setState(() {});
+    animationController.forward().then((value) {
+      _createUIInfo();
+    });
+
   }
 }
 
-class TestSliderCaptchar extends SingleChildRenderObjectWidget {
+class TestSliderCaptChar extends SingleChildRenderObjectWidget {
   final Image image;
 
   final BasePath path;
 
-  TestSliderCaptchar(this.image, this.path, {Key? key})
+  final double offsetX;
+
+  final double offsetY;
+
+  final double createX;
+
+  final double createY;
+
+  final double sizeCaptchar;
+
+  const TestSliderCaptChar(this.image, this.path, this.offsetX, this.offsetY,
+      this.createX, this.createY,
+      {this.sizeCaptchar = 40, Key? key})
       : super(key: key, child: image);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    final renderObject = _RenderTestSliderCaptchar(path);
+    final renderObject = _RenderTestSliderCaptChar(
+        path, sizeCaptchar, offsetX, offsetY, createX, createY);
+    // renderObject.create(sizeCaptchar);
     updateRenderObject(context, renderObject);
     return renderObject;
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderTestSliderCaptchar renderObject) {
+      BuildContext context, _RenderTestSliderCaptChar renderObject) {
     // renderObject.path = image;
+
+    renderObject.offsetX = offsetX;
+    renderObject.offsetY = offsetY;
+    renderObject.createX = createX;
+    renderObject.createY = createY;
   }
 }
 
-class _RenderTestSliderCaptchar extends RenderProxyBox {
+class _RenderTestSliderCaptChar extends RenderProxyBox {
   final BasePath path;
 
-  _RenderTestSliderCaptchar(this.path);
+  final double sizeCaptChar;
+
+  double offsetX;
+
+  double offsetY;
+
+  double createX;
+
+  double createY;
+
+  _RenderTestSliderCaptChar(
+    this.path,
+    this.sizeCaptChar,
+    this.offsetX,
+    this.offsetY,
+    this.createX,
+    this.createY,
+  );
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    debugPrint(createY.toString());
+
     if (child == null) return;
 
+    context.paintChild(child!, offset);
+    if (!(child!.size.width > 0 && child!.size.height > 0)) {
+      return;
+    }
+
+
     Paint paint = Paint()
-    ..color = Colors.blue
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 3.0;
+      ..color = Colors.blue
+      ..strokeWidth = 3.0;
 
-    Path test = Path(); //..moveTo(100, 100);
+    context.canvas.drawPath(
+      getPiecePathCustom(
+          size, createX.toDouble(), createY.toDouble(), sizeCaptChar),
+      paint..style = PaintingStyle.fill,
+    );
 
-    Path _path = path.drawPath(test);
+    context.canvas.translate(-createX.toDouble(), 0);
+
+    if(!(createY == 0 && createY == 0)){
+      context.canvas.drawPath(
+          getPiecePathCustom(size, offsetX + createX.toDouble(),
+              createY.toDouble(), sizeCaptChar),
+          paint..style =PaintingStyle.stroke);
+    }
+
+
+
+
     layer = context.pushClipPath(
       needsCompositing,
-      offset,
+      Offset(offsetX,  offset.dy),
       Offset.zero & size,
-      _path..moveTo(10, 10),
-      // super.paint,
-      (context, offset)=> context.paintChild(child!, offset),
-      // clipBehavior: clipBehavior,
+      getPiecePathCustom(size, createX.toDouble(), createY.toDouble() -  offset.dy, 40),
+      (context, offset) {
+        debugPrint('test: ${offset.toString()}');
+        context.paintChild(child!, offset);
+      },
       oldLayer: layer as ClipPathLayer?,
     );
-    context.canvas.translate(offset.dx, offset.dy);
-    context.canvas.drawPath(_path, paint);
+    context.canvas.translate(createX.toDouble(), 0);
   }
 
-  void _updateClip() {
-    // _clip ??= _clipper?.getClip(size) ?? _defaultClip;
-  }
 }
 
 abstract class BasePath {
