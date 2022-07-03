@@ -17,6 +17,8 @@ class SliderCaptcha extends StatefulWidget {
       this.title = 'Slide to authenticate',
       this.titleStyle,
       this.captchaSize = 30,
+      this.colorBar = Colors.red,
+      this.colorCaptChar = Colors.blue,
       this.controller,
       Key? key})
       : super(key: key);
@@ -28,6 +30,10 @@ class SliderCaptcha extends StatefulWidget {
   final String title;
 
   final TextStyle? titleStyle;
+
+  final Color colorBar;
+
+  final Color colorCaptChar;
 
   final double captchaSize;
 
@@ -66,7 +72,14 @@ class _SliderCaptchaState extends State<SliderCaptcha>
             },
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 500),
-              child: _captcha(context, _offsetMove, answerY),
+              child: TestSliderCaptChar(
+                widget.image,
+                _offsetMove,
+                answerY,
+                answerX,
+                answerY,
+                colorCaptChar: widget.colorCaptChar,
+              ),
             ),
           ),
           Container(
@@ -74,7 +87,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
             width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.red,
+                color: widget.colorBar,
                 boxShadow: const <BoxShadow>[
                   BoxShadow(
                     offset: Offset(0, 0),
@@ -176,14 +189,12 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         });
       })
       ..addStatusListener((status) {
-
         if (status == AnimationStatus.completed) {
           animationController.reset();
         }
-      }
-      );
+      });
     answerX = -100;
-    answerX =-100;
+    answerX = -100;
   }
 
   @override
@@ -206,22 +217,12 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     answerX = widget.captchaSize +
         Random().nextInt((width - 2 * widget.captchaSize).toInt());
 //
-    answerY = MediaQuery.of(context).padding.top+ Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
-  }
-
-  Widget _captcha(BuildContext context, double x, double y) {
-    return TestSliderCaptChar(
-      widget.image,
-      PathTest(),
-      x,
-      y,
-      answerX,
-      answerY,
-    );
+    answerY = MediaQuery.of(context).padding.top +
+        Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
   }
 
   void checkAnswer() {
-    if (_offsetMove<answerX +10  &&_offsetMove>answerX -10  ) {
+    if (_offsetMove < answerX + 10 && _offsetMove > answerX - 10) {
       if (widget.onConfirm != null) {
         widget.onConfirm!(true);
       }
@@ -238,14 +239,11 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     animationController.forward().then((value) {
       _createUIInfo();
     });
-
   }
 }
 
 class TestSliderCaptChar extends SingleChildRenderObjectWidget {
   final Image image;
-
-  final BasePath path;
 
   final double offsetX;
 
@@ -255,17 +253,19 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
 
   final double createY;
 
+  final Color colorCaptChar;
+
   final double sizeCaptchar;
 
-  const TestSliderCaptChar(this.image, this.path, this.offsetX, this.offsetY,
-      this.createX, this.createY,
-      {this.sizeCaptchar = 40, Key? key})
+  const TestSliderCaptChar(
+      this.image, this.offsetX, this.offsetY, this.createX, this.createY,
+      {this.sizeCaptchar = 40, this.colorCaptChar = Colors.blue, Key? key})
       : super(key: key, child: image);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     final renderObject = _RenderTestSliderCaptChar(
-        path, sizeCaptchar, offsetX, offsetY, createX, createY);
+        sizeCaptchar, offsetX, offsetY, createX, createY, colorCaptChar);
     // renderObject.create(sizeCaptchar);
     updateRenderObject(context, renderObject);
     return renderObject;
@@ -280,12 +280,13 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
     renderObject.offsetY = offsetY;
     renderObject.createX = createX;
     renderObject.createY = createY;
+    renderObject.colorCaptChar = colorCaptChar;
+    // renderObject. = colorCaptChar;
+
   }
 }
 
 class _RenderTestSliderCaptChar extends RenderProxyBox {
-  final BasePath path;
-
   final double sizeCaptChar;
 
   double offsetX;
@@ -296,13 +297,15 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   double createY;
 
+  Color colorCaptChar;
+
   _RenderTestSliderCaptChar(
-    this.path,
     this.sizeCaptChar,
     this.offsetX,
     this.offsetY,
     this.createX,
     this.createY,
+    this.colorCaptChar,
   );
 
   @override
@@ -316,9 +319,8 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       return;
     }
 
-
     Paint paint = Paint()
-      ..color = Colors.blue
+      ..color = colorCaptChar
       ..strokeWidth = 3.0;
 
     context.canvas.drawPath(
@@ -329,21 +331,19 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     context.canvas.translate(-createX.toDouble(), 0);
 
-    if(!(createY == 0 && createY == 0)){
+    if (!(createY == 0 && createY == 0)) {
       context.canvas.drawPath(
           getPiecePathCustom(size, offsetX + createX.toDouble(),
               createY.toDouble(), sizeCaptChar),
-          paint..style =PaintingStyle.stroke);
+          paint..style = PaintingStyle.stroke);
     }
-
-
-
 
     layer = context.pushClipPath(
       needsCompositing,
-      Offset(offsetX,  offset.dy),
+      Offset(offsetX, offset.dy),
       Offset.zero & size,
-      getPiecePathCustom(size, createX.toDouble(), createY.toDouble() -  offset.dy, 40),
+      getPiecePathCustom(
+          size, createX.toDouble(), createY.toDouble() - offset.dy, 40),
       (context, offset) {
         debugPrint('test: ${offset.toString()}');
         context.paintChild(child!, offset);
@@ -352,7 +352,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     );
     context.canvas.translate(createX.toDouble(), 0);
   }
-
 }
 
 abstract class BasePath {

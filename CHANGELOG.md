@@ -23,4 +23,8 @@
   TODO :
      -Remove dependencies on other libraries
      - Fix issue: #5
-  
+
+## 1.0.0
+TODO :
+- Improve performance
+- Add color Options

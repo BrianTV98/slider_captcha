@@ -44,8 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
             'assets/image.jpeg',
             fit: BoxFit.fitWidth,
           ),
+          colorBar: Colors.blue,
+          colorCaptChar: Colors.blue,
           onConfirm: (value) {
-            Future.delayed(const Duration(seconds: 3)).then(
+            Future.delayed(const Duration(seconds: 1)).then(
               (value) {
                 controller.create();
               },
