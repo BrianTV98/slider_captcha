@@ -39,6 +39,7 @@ Path getPiecePathCustom(
   // offsetX = offsetX -sizePart;
 
   Path path = Path();
+
   path.moveTo(offsetX, offsetY);
 
   // top bump

@@ -34,6 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint(MediaQuery.of(context).devicePixelRatio.toString());
     return Scaffold(
       body: SafeArea(
         child: SliderCaptcha(
@@ -43,8 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             fit: BoxFit.fitWidth,
           ),
           onConfirm: (value) {
-            debugPrint(value.toString());
-            Future.delayed(const Duration(seconds: 1)).then(
+            Future.delayed(const Duration(seconds: 3)).then(
               (value) {
                 controller.create();
               },
