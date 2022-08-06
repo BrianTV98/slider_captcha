@@ -28,3 +28,6 @@
 TODO :
 - Improve performance
 - Add color Options
+## 0.1.1
+TODO
+- Fix bug Puzzle block position out of picture size
