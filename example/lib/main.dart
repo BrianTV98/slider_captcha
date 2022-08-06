@@ -34,9 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    debugPrint(MediaQuery.of(context).devicePixelRatio.toString());
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: SliderCaptcha(
           controller: controller,

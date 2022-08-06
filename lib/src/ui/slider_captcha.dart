@@ -4,24 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../pizzule_path.dart';
-import 'dart:ui' as ui;
+
 
 class SliderController {
   late VoidCallback create;
 }
 
 class SliderCaptcha extends StatefulWidget {
-  const SliderCaptcha(
-      {required this.image,
-      required this.onConfirm,
-      this.title = 'Slide to authenticate',
-      this.titleStyle,
-      this.captchaSize = 30,
-      this.colorBar = Colors.red,
-      this.colorCaptChar = Colors.blue,
-      this.controller,
-      Key? key})
-      : super(key: key);
+  const SliderCaptcha({
+    required this.image,
+    required this.onConfirm,
+    this.title = 'Slide to authenticate',
+    this.titleStyle,
+    this.captchaSize = 30,
+    this.colorBar = Colors.red,
+    this.colorCaptChar = Colors.blue,
+    this.controller,
+    Key? key,
+  }) : super(key: key);
 
   final Image image;
 
@@ -56,6 +56,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   late SliderController controller;
 
   late Animation<double> animation;
+
   late AnimationController animationController;
 
   @override
@@ -68,7 +69,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         children: [
           GestureDetector(
             onHorizontalDragStart: (DragStartDetails detail) {
-              debugPrint(detail.localPosition.toString());
             },
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 500),
@@ -86,49 +86,54 @@ class _SliderCaptchaState extends State<SliderCaptcha>
             height: heightSliderBar,
             width: double.infinity,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: widget.colorBar,
-                boxShadow: const <BoxShadow>[
-                  BoxShadow(
-                    offset: Offset(0, 0),
-                    blurRadius: 2,
-                    color: Colors.grey,
-                  )
-                ]),
+              borderRadius: BorderRadius.circular(10),
+              color: widget.colorBar,
+              boxShadow: const <BoxShadow>[
+                BoxShadow(
+                  offset: Offset(0, 0),
+                  blurRadius: 2,
+                  color: Colors.grey,
+                )
+              ],
+            ),
             child: Stack(
               children: <Widget>[
                 Center(
-                  child: Text(widget.title,
-                      style: widget.titleStyle, textAlign: TextAlign.center),
+                  child: Text(
+                    widget.title,
+                    style: widget.titleStyle,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 Positioned(
-                    left: _offsetMove,
-                    top: 0,
-                    height: 50,
-                    width: 50,
-                    child: GestureDetector(
-                      onHorizontalDragStart: (DragStartDetails detail) {
-                        _onDragStart(context, detail);
-                      },
-                      onHorizontalDragUpdate: (DragUpdateDetails detail) {
-                        _onDragUpdate(context, detail);
-                      },
-                      onHorizontalDragEnd: (DragEndDetails detail) {
-                        checkAnswer();
-                      },
-                      child: Container(
-                        height: heightSliderBar,
-                        width: heightSliderBar,
-                        margin: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.white,
-                            boxShadow: const <BoxShadow>[
-                              BoxShadow(color: Colors.grey, blurRadius: 4)
-                            ]),
-                        child: const Icon(Icons.arrow_forward_rounded),
+                  left: _offsetMove,
+                  top: 0,
+                  height: 50,
+                  width: 50,
+                  child: GestureDetector(
+                    onHorizontalDragStart: (detail) =>
+                        _onDragStart(context, detail),
+                    onHorizontalDragUpdate: (DragUpdateDetails detail) {
+                      _onDragUpdate(context, detail);
+                    },
+                    onHorizontalDragEnd: (DragEndDetails detail) {
+                      checkAnswer();
+                    },
+                    child: Container(
+                      height: heightSliderBar,
+                      width: heightSliderBar,
+                      margin: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(color: Colors.grey, blurRadius: 4)
+                        ],
                       ),
-                    )),
+                      child: const Icon(Icons.arrow_forward_rounded),
+                    ),
+                  ),
+                ),
               ],
             ),
           )
@@ -166,7 +171,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     setState(() {
       _offsetMove = local.dx - heightSliderBar / 2;
     });
-    debugPrint(_offsetMove.toString());
+
   }
 
   @override
@@ -181,7 +186,10 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     controller.create = reset;
 
     animationController = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
     animation = Tween<double>(begin: 1, end: 0).animate(animationController)
       ..addListener(() {
         setState(() {
@@ -212,10 +220,10 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   }
 
   void _createUIInfo() async {
+    /// Kích thước ngang của khung hình
     double width = context.size!.width;
-//
     answerX = widget.captchaSize +
-        Random().nextInt((width - 2 * widget.captchaSize).toInt());
+        Random().nextInt((width - 4 * widget.captchaSize).toInt());
 //
     answerY = MediaQuery.of(context).padding.top +
         Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
@@ -231,8 +239,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         widget.onConfirm!(false);
       }
     }
-
-    // reset();
   }
 
   void reset() {
@@ -243,51 +249,60 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 }
 
 class TestSliderCaptChar extends SingleChildRenderObjectWidget {
+  ///Hình ảnh góc
   final Image image;
 
+  /// Vị trí dx slider captChar
   final double offsetX;
 
+  /// Vị trí dy slider captChar
   final double offsetY;
 
+  /// Vị trí dx  của phần bị khuyết
   final double createX;
 
+  /// Vị trí dy của phần bi khuyết
   final double createY;
 
+  /// Màu sắt của captchar
   final Color colorCaptChar;
 
-  final double sizeCaptchar;
+  /// Kích thước của captchar
+  final double sizeCaptChar;
 
   const TestSliderCaptChar(
-      this.image, this.offsetX, this.offsetY, this.createX, this.createY,
-      {this.sizeCaptchar = 40, this.colorCaptChar = Colors.blue, Key? key})
-      : super(key: key, child: image);
+    this.image,
+    this.offsetX,
+    this.offsetY,
+    this.createX,
+    this.createY, {
+    this.sizeCaptChar = 40,
+    this.colorCaptChar = Colors.blue,
+    Key? key,
+  }) : super(key: key, child: image);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     final renderObject = _RenderTestSliderCaptChar(
-        sizeCaptchar, offsetX, offsetY, createX, createY, colorCaptChar);
-    // renderObject.create(sizeCaptchar);
+        sizeCaptChar, offsetX, offsetY, createX, createY, colorCaptChar);
     updateRenderObject(context, renderObject);
     return renderObject;
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderTestSliderCaptChar renderObject) {
-    // renderObject.path = image;
-
+  void updateRenderObject(context, _RenderTestSliderCaptChar renderObject) {
     renderObject.offsetX = offsetX;
     renderObject.offsetY = offsetY;
     renderObject.createX = createX;
     renderObject.createY = createY;
     renderObject.colorCaptChar = colorCaptChar;
-    // renderObject. = colorCaptChar;
-
   }
 }
 
 class _RenderTestSliderCaptChar extends RenderProxyBox {
   final double sizeCaptChar;
+
+  final double strokeWidth = 3;
 
   double offsetX;
 
@@ -299,6 +314,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   Color colorCaptChar;
 
+
   _RenderTestSliderCaptChar(
     this.sizeCaptChar,
     this.offsetX,
@@ -308,90 +324,102 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     this.colorCaptChar,
   );
 
+
   @override
   void paint(PaintingContext context, Offset offset) {
-    debugPrint(createY.toString());
-
     if (child == null) return;
 
+    /// Vẽ hình background.
     context.paintChild(child!, offset);
+
+    /// Khử trường hợp ảnh bị giật khi sử dụng WidgetsBinding.instance.addPostFrameCallback
     if (!(child!.size.width > 0 && child!.size.height > 0)) {
       return;
     }
 
     Paint paint = Paint()
       ..color = colorCaptChar
-      ..strokeWidth = 3.0;
+      ..strokeWidth = strokeWidth;
+
 
     context.canvas.drawPath(
       getPiecePathCustom(
-          size, createX.toDouble(), createY.toDouble(), sizeCaptChar),
+        size,
+        strokeWidth + offset.dx * 2 + createX.toDouble(),
+        offset.dy + createY.toDouble(),
+        sizeCaptChar,
+      ),
       paint..style = PaintingStyle.fill,
     );
 
-    context.canvas.translate(-createX.toDouble(), 0);
-
     if (!(createY == 0 && createY == 0)) {
       context.canvas.drawPath(
-          getPiecePathCustom(size, offsetX + createX.toDouble(),
-              createY.toDouble(), sizeCaptChar),
-          paint..style = PaintingStyle.stroke);
+        getPiecePathCustom(
+          size,
+          strokeWidth+ offset.dx + offsetX ,
+          offset.dy + createY,
+          sizeCaptChar,
+        ),
+        paint..style = PaintingStyle.stroke,
+      );
     }
 
     layer = context.pushClipPath(
       needsCompositing,
-      Offset(offsetX, offset.dy),
+      Offset(-createX +offsetX +strokeWidth, offset.dy),
       Offset.zero & size,
       getPiecePathCustom(
-          size, createX.toDouble(), createY.toDouble() - offset.dy, 40),
+        size,
+        createX+offset.dx,
+        createY.toDouble(),
+        sizeCaptChar,
+      ),
       (context, offset) {
-        debugPrint('test: ${offset.toString()}');
         context.paintChild(child!, offset);
       },
       oldLayer: layer as ClipPathLayer?,
     );
-    context.canvas.translate(createX.toDouble(), 0);
   }
 }
 
-abstract class BasePath {
-  Path drawPath(Path path);
-}
-
-class PathTest extends BasePath {
-  var sizePart = 50.0;
-
-  final double bumpSize = 50 / 4;
-
-  @override
-  Path drawPath(Path path) {
-    // Path path = Path();
-    // top bump
-    path.lineTo(sizePart / 3, 0);
-
-    path.cubicTo(sizePart / 6, bumpSize, sizePart / 6 * 5, bumpSize,
-        sizePart / 3 * 2, 0);
-
-    path.lineTo(sizePart.toDouble(), 0);
-
-    // right bump
-    path.lineTo(sizePart.toDouble(), sizePart / 3);
-
-    path.cubicTo(sizePart - bumpSize, sizePart / 6, sizePart - bumpSize,
-        sizePart / 6 * 5, sizePart.toDouble(), sizePart / 3 * 2);
-
-    path.lineTo(sizePart, sizePart);
-
-    path.lineTo(sizePart / 3 * 2, sizePart);
-
-    path.lineTo(0, sizePart);
-
-    //   // left bump
-    path.lineTo(0, sizePart / 3 * 2);
-
-    path.cubicTo(
-        bumpSize, sizePart / 6 * 5, bumpSize, sizePart / 6, 0, sizePart / 3);
-
-    return path;
-  }
-}
+// abstract class BasePath {
+//   Path drawPath(Path path);
+// }
+//
+// class PathTest extends BasePath {
+//   var sizePart = 50.0;
+//
+//   final double bumpSize = 50 / 4;
+//
+//   @override
+//   Path drawPath(Path path) {
+//     // Path path = Path();
+//     // top bump
+//     path.lineTo(sizePart / 3, 0);
+//
+//     path.cubicTo(sizePart / 6, bumpSize, sizePart / 6 * 5, bumpSize,
+//         sizePart / 3 * 2, 0);
+//
+//     path.lineTo(sizePart.toDouble(), 0);
+//
+//     // right bump
+//     path.lineTo(sizePart.toDouble(), sizePart / 3);
+//
+//     path.cubicTo(sizePart - bumpSize, sizePart / 6, sizePart - bumpSize,
+//         sizePart / 6 * 5, sizePart.toDouble(), sizePart / 3 * 2);
+//
+//     path.lineTo(sizePart, sizePart);
+//
+//     path.lineTo(sizePart / 3 * 2, sizePart);
+//
+//     path.lineTo(0, sizePart);
+//
+//     //   // left bump
+//     path.lineTo(0, sizePart / 3 * 2);
+//
+//     path.cubicTo(
+//         bumpSize, sizePart / 6 * 5, bumpSize, sizePart / 6, 0, sizePart / 3);
+//
+//     return path;
+//   }
+// }

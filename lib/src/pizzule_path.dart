@@ -46,12 +46,13 @@ Path getPiecePathCustom(
   path.lineTo(offsetX + sizePart / 3, offsetY);
 
   path.cubicTo(
-      offsetX + sizePart / 6,
-      offsetY - bumpSize,
-      offsetX + sizePart / 6 * 5,
-      offsetY - bumpSize,
-      offsetX + sizePart / 3 * 2,
-      offsetY);
+    offsetX + sizePart / 6,
+    offsetY + bumpSize,
+    offsetX + sizePart / 6 * 5,
+    offsetY + bumpSize,
+    offsetX + sizePart / 3 * 2,
+    offsetY,
+  );
 
   path.lineTo(offsetX + sizePart, offsetY);
 
@@ -59,9 +60,9 @@ Path getPiecePathCustom(
   path.lineTo(offsetX + sizePart, offsetY + sizePart / 3);
 
   path.cubicTo(
-      offsetX + sizePart - bumpSize,
+      offsetX + sizePart + bumpSize,
       offsetY + sizePart / 6,
-      offsetX + sizePart - bumpSize,
+      offsetX + sizePart + bumpSize,
       offsetY + sizePart / 6 * 5,
       offsetX + sizePart,
       offsetY + sizePart / 3 * 2);
@@ -76,9 +77,9 @@ Path getPiecePathCustom(
   path.lineTo(offsetX, offsetY + sizePart / 3 * 2);
 
   path.cubicTo(
-      offsetX - bumpSize,
+      offsetX + bumpSize,
       offsetY + sizePart / 6 * 5,
-      offsetX - bumpSize,
+      offsetX + bumpSize,
       offsetY + sizePart / 6,
       offsetX,
       offsetY + sizePart / 3);

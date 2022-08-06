@@ -1,6 +1,6 @@
 name: slider_captcha
 description: slide captcha the same as binance, allow drag and drop for validation
-version: 0.0.8
+version: 0.1.1
 homepage: https://github.com/BrianTV98/slider_captcha/
 
 environment:
