@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 
 import '../pizzule_path.dart';
 
-
 class SliderController {
   late VoidCallback create;
 }
@@ -68,10 +67,9 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onHorizontalDragStart: (DragStartDetails detail) {
-            },
+            onHorizontalDragStart: (DragStartDetails detail) {},
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
+              constraints: const BoxConstraints(maxWidth: 500, maxHeight: 500),
               child: TestSliderCaptChar(
                 widget.image,
                 _offsetMove,
@@ -117,6 +115,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                       _onDragUpdate(context, detail);
                     },
                     onHorizontalDragEnd: (DragEndDetails detail) {
+                      debugPrint('endDrag');
                       checkAnswer();
                     },
                     child: Container(
@@ -171,7 +170,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     setState(() {
       _offsetMove = local.dx - heightSliderBar / 2;
     });
-
   }
 
   @override
@@ -230,15 +228,12 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   }
 
   void checkAnswer() {
-    if (_offsetMove < answerX + 10 && _offsetMove > answerX - 10) {
-      if (widget.onConfirm != null) {
-        widget.onConfirm!(true);
-      }
+    if (_offsetMove < answerX + 5 && _offsetMove > answerX - 5) {
+      widget.onConfirm?.call(true);
     } else {
-      if (widget.onConfirm != null) {
-        widget.onConfirm!(false);
-      }
+      widget.onConfirm?.call(false);
     }
+
   }
 
   void reset() {
@@ -314,7 +309,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   Color colorCaptChar;
 
-
   _RenderTestSliderCaptChar(
     this.sizeCaptChar,
     this.offsetX,
@@ -323,7 +317,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     this.createY,
     this.colorCaptChar,
   );
-
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -341,7 +334,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       ..color = colorCaptChar
       ..strokeWidth = strokeWidth;
 
-
     context.canvas.drawPath(
       getPiecePathCustom(
         size,
@@ -356,7 +348,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       context.canvas.drawPath(
         getPiecePathCustom(
           size,
-          strokeWidth+ offset.dx + offsetX ,
+          strokeWidth + offset.dx + offsetX,
           offset.dy + createY,
           sizeCaptChar,
         ),
@@ -366,11 +358,11 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     layer = context.pushClipPath(
       needsCompositing,
-      Offset(-createX +offsetX +strokeWidth, offset.dy),
+      Offset(-createX + offsetX + strokeWidth, offset.dy),
       Offset.zero & size,
       getPiecePathCustom(
         size,
-        createX+offset.dx,
+        createX + offset.dx,
         createY.toDouble(),
         sizeCaptChar,
       ),
