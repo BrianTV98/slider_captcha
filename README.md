@@ -11,25 +11,20 @@ Authentication by image
 
 ```
    SliderCaptcha(
-         image: Image.asset(
+          controller: controller,
+          image: Image.asset(
             'assets/image.jpeg',
-             fit: BoxFit.fitWidth,
-         ),
-         onSuccess: () => showMyDialog(context),
-   ),
-
+            fit: BoxFit.fitWidth,
+          ),
+          colorBar: Colors.blue,
+          colorCaptChar: Colors.blue,
+          onConfirm: (value) {
+            debugPrint(value.toString());
+            Future.delayed(const Duration(seconds: 1)).then(
+              (value) {
+                controller.create();
+              },
+            );
+          },
+        ),
 ```
-
-## Demo
-![Showscase gif](https://github.com/BrianTV98/slider_captcha/blob/main/demo/slider_captcha_extention.gif)
-```
-   SliderCaptchaExtension(
-         image: Image.asset(
-            'assets/image.jpeg',
-             fit: BoxFit.fitWidth,
-         ),
-         onSuccess: () => showMyDialog(context),
-   ),
-
-```
-
