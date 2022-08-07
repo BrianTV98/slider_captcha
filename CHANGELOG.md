@@ -31,3 +31,7 @@ TODO :
 ## 0.1.1
 TODO
 - Fix bug Puzzle block position out of picture size
+## 0.1.2
+TODO
+- Fix some bug
+
