@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slider_captcha/self.dart';
+import 'package:slider_captcha/slider_capchar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,51 +30,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final SliderController controller = SliderController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: IconButton(
-          icon: const Icon(Icons.add_shopping_cart),
-          onPressed: () => showCaptcha(context),
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SliderCaptcha(
+          controller: controller,
+          image: Image.asset(
+            'assets/image.jpeg',
+            fit: BoxFit.fitWidth,
+          ),
+          colorBar: Colors.blue,
+          colorCaptChar: Colors.blue,
+          onConfirm: (value) {
+            debugPrint(value.toString());
+            Future.delayed(const Duration(seconds: 1)).then(
+              (value) {
+                controller.create();
+              },
+            );
+          },
         ),
-        body: const SizedBox());
-  }
-
-  void showMyDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Icon(
-              Icons.check_circle_outline,
-              color: Colors.green,
-            ),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('Authentication successful!'),
-              ],
-            ),
-          );
-        });
-  }
-
-  void showCaptcha(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: SliderCaptcha(
-                image: Image.asset(
-                  'assets/image.jpeg',
-                  fit: BoxFit.fitWidth,
-                ),
-                onSuccess: () => showMyDialog(context),
-              ),
-            ),
-          );
-        });
+      ),
+    );
   }
 }
