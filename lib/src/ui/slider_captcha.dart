@@ -115,7 +115,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                       _onDragUpdate(context, detail);
                     },
                     onHorizontalDragEnd: (DragEndDetails detail) {
-                      debugPrint('endDrag');
                       checkAnswer();
                     },
                     child: Container(
@@ -373,45 +372,3 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     );
   }
 }
-
-// abstract class BasePath {
-//   Path drawPath(Path path);
-// }
-//
-// class PathTest extends BasePath {
-//   var sizePart = 50.0;
-//
-//   final double bumpSize = 50 / 4;
-//
-//   @override
-//   Path drawPath(Path path) {
-//     // Path path = Path();
-//     // top bump
-//     path.lineTo(sizePart / 3, 0);
-//
-//     path.cubicTo(sizePart / 6, bumpSize, sizePart / 6 * 5, bumpSize,
-//         sizePart / 3 * 2, 0);
-//
-//     path.lineTo(sizePart.toDouble(), 0);
-//
-//     // right bump
-//     path.lineTo(sizePart.toDouble(), sizePart / 3);
-//
-//     path.cubicTo(sizePart - bumpSize, sizePart / 6, sizePart - bumpSize,
-//         sizePart / 6 * 5, sizePart.toDouble(), sizePart / 3 * 2);
-//
-//     path.lineTo(sizePart, sizePart);
-//
-//     path.lineTo(sizePart / 3 * 2, sizePart);
-//
-//     path.lineTo(0, sizePart);
-//
-//     //   // left bump
-//     path.lineTo(0, sizePart / 3 * 2);
-//
-//     path.cubicTo(
-//         bumpSize, sizePart / 6 * 5, bumpSize, sizePart / 6, 0, sizePart / 3);
-//
-//     return path;
-//   }
-// }
