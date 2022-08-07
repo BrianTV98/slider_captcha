@@ -1,8 +1,4 @@
-import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class PuzzlePiecePainter extends CustomPainter {
   PuzzlePiecePainter(this.width, this.height, this.offsetX, this.offsetY,

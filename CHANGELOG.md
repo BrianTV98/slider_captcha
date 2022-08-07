@@ -34,4 +34,7 @@ TODO
 ## 0.1.2
 TODO
 - Fix some bug
+## 0.1.3
+TODO
+- update lint rule
 
