@@ -37,21 +37,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: SliderCaptcha(
-          controller: controller,
-          image: Image.asset(
-            'assets/image.jpeg',
-            fit: BoxFit.fitWidth,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SliderCaptcha(
+            controller: controller,
+            image: Image.asset(
+              'assets/image.jpeg',
+              fit: BoxFit.fitWidth,
+            ),
+            colorBar: Colors.blue,
+            colorCaptChar: Colors.blue,
+            onConfirm: (value) {
+              debugPrint(value.toString());
+              Future.delayed(const Duration(seconds: 1)).then(
+                (value) {
+                  controller.create();
+                },
+              );
+            },
           ),
-          colorBar: Colors.blue,
-          colorCaptChar: Colors.blue,
-          onConfirm: (value) {
-            Future.delayed(const Duration(seconds: 1)).then(
-              (value) {
-                controller.create();
-              },
-            );
-          },
         ),
       ),
     );

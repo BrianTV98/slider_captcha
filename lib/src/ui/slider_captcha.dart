@@ -112,6 +112,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                     onHorizontalDragStart: (detail) =>
                         _onDragStart(context, detail),
                     onHorizontalDragUpdate: (DragUpdateDetails detail) {
+
                       _onDragUpdate(context, detail);
                     },
                     onHorizontalDragEnd: (DragEndDetails detail) {
@@ -167,7 +168,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     }
 
     setState(() {
-      _offsetMove = local.dx - heightSliderBar / 2;
+      _offsetMove =  local.dx - heightSliderBar / 2;
     });
   }
 
@@ -336,7 +337,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     context.canvas.drawPath(
       getPiecePathCustom(
         size,
-        strokeWidth + offset.dx * 2 + createX.toDouble(),
+        strokeWidth + offset.dx + createX.toDouble(),
         offset.dy + createY.toDouble(),
         sizeCaptChar,
       ),
@@ -357,11 +358,12 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     layer = context.pushClipPath(
       needsCompositing,
-      Offset(-createX + offsetX + strokeWidth, offset.dy),
+      /// Move về đầu [-create] và trược theo offsetX
+      Offset(-createX + offsetX + offset.dx + strokeWidth, offset.dy),
       Offset.zero & size,
       getPiecePathCustom(
         size,
-        createX + offset.dx,
+        createX,
         createY.toDouble(),
         sizeCaptChar,
       ),
