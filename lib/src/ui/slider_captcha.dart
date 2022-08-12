@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 import '../pizzule_path.dart';
 
 class SliderController {
-  late VoidCallback create;
+  late Offset? Function() create;
 }
 
 class SliderCaptcha extends StatefulWidget {
@@ -53,6 +53,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   double answerY = 0;
 
   late SliderController controller;
+  late final SliderController _controller = SliderController();
 
   late Animation<double> animation;
 
@@ -66,19 +67,12 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onHorizontalDragStart: (DragStartDetails detail) {},
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500, maxHeight: 500),
-              child: TestSliderCaptChar(
-                widget.image,
-                _offsetMove,
-                answerY,
-                answerX,
-                answerY,
-                colorCaptChar: widget.colorCaptChar,
-              ),
-            ),
+          TestSliderCaptChar(
+            widget.image,
+            _offsetMove,
+            answerY,
+            colorCaptChar: widget.colorCaptChar,
+            sliderController: _controller,
           ),
           Container(
             height: heightSliderBar,
@@ -112,7 +106,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                     onHorizontalDragStart: (detail) =>
                         _onDragStart(context, detail),
                     onHorizontalDragUpdate: (DragUpdateDetails detail) {
-
                       _onDragUpdate(context, detail);
                     },
                     onHorizontalDragEnd: (DragEndDetails detail) {
@@ -168,7 +161,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     }
 
     setState(() {
-      _offsetMove =  local.dx - heightSliderBar / 2;
+      _offsetMove = local.dx - heightSliderBar / 2;
     });
   }
 
@@ -205,9 +198,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _createUIInfo();
-    });
     super.didChangeDependencies();
   }
 
@@ -217,31 +207,25 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     });
   }
 
-  void _createUIInfo() async {
-    /// Kích thước ngang của khung hình
-    double width = context.size!.width;
-    answerX = widget.captchaSize +
-        Random().nextInt((width - 4 * widget.captchaSize).toInt());
-//
-    answerY = MediaQuery.of(context).padding.top +
-        Random().nextInt((200 - widget.captchaSize).toInt()).toDouble();
-  }
-
   void checkAnswer() {
     if (_offsetMove < answerX + 5 && _offsetMove > answerX - 5) {
       widget.onConfirm?.call(true);
     } else {
       widget.onConfirm?.call(false);
     }
-
   }
 
-  void reset() {
+  Offset? reset() {
     animationController.forward().then((value) {
-      _createUIInfo();
+      Offset? offset = _controller.create.call();
+      answerX = offset?.dx ?? 0;
+      answerY = offset?.dy ?? 0;
     });
+    return null;
   }
 }
+
+typedef SliderCreate = Offset? Function();
 
 class TestSliderCaptChar extends SingleChildRenderObjectWidget {
   ///Hình ảnh góc
@@ -253,70 +237,63 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
   /// Vị trí dy slider captChar
   final double offsetY;
 
-  /// Vị trí dx  của phần bị khuyết
-  final double createX;
-
-  /// Vị trí dy của phần bi khuyết
-  final double createY;
-
   /// Màu sắt của captchar
   final Color colorCaptChar;
 
   /// Kích thước của captchar
   final double sizeCaptChar;
 
+  final SliderController sliderController;
+
   const TestSliderCaptChar(
     this.image,
     this.offsetX,
-    this.offsetY,
-    this.createX,
-    this.createY, {
+    this.offsetY, {
     this.sizeCaptChar = 40,
     this.colorCaptChar = Colors.blue,
+    required this.sliderController,
     Key? key,
   }) : super(key: key, child: image);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    final renderObject = _RenderTestSliderCaptChar(
-        sizeCaptChar, offsetX, offsetY, createX, createY, colorCaptChar);
-    updateRenderObject(context, renderObject);
+    final renderObject = _RenderTestSliderCaptChar();
+    renderObject.offsetX = offsetX;
+    renderObject.offsetY = offsetY;
+    renderObject.colorCaptChar = colorCaptChar;
+    renderObject.sizeCaptChar = sizeCaptChar;
+    renderObject.colorCaptChar = colorCaptChar;
+    sliderController.create = renderObject.create;
     return renderObject;
   }
 
+  // //
   @override
   void updateRenderObject(context, _RenderTestSliderCaptChar renderObject) {
     renderObject.offsetX = offsetX;
     renderObject.offsetY = offsetY;
-    renderObject.createX = createX;
-    renderObject.createY = createY;
     renderObject.colorCaptChar = colorCaptChar;
+    renderObject.sizeCaptChar = sizeCaptChar;
+    renderObject.colorCaptChar = colorCaptChar;
+
+    super.updateRenderObject(context, renderObject);
   }
 }
 
 class _RenderTestSliderCaptChar extends RenderProxyBox {
-  final double sizeCaptChar;
+  double sizeCaptChar = 40;
 
-  final double strokeWidth = 3;
+  double strokeWidth = 3;
 
-  double offsetX;
+  double offsetX = 0;
 
-  double offsetY;
+  double offsetY = 0;
 
-  double createX;
+  double createX = 0;
 
-  double createY;
+  double createY = 0;
 
-  Color colorCaptChar;
-
-  _RenderTestSliderCaptChar(
-    this.sizeCaptChar,
-    this.offsetX,
-    this.offsetY,
-    this.createX,
-    this.createY,
-    this.colorCaptChar,
-  );
+  Color colorCaptChar = Colors.black;
 
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -334,6 +311,8 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       ..color = colorCaptChar
       ..strokeWidth = strokeWidth;
 
+    if (createX == 0 && createY == 0) return;
+
     context.canvas.drawPath(
       getPiecePathCustom(
         size,
@@ -344,20 +323,19 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       paint..style = PaintingStyle.fill,
     );
 
-    if (!(createY == 0 && createY == 0)) {
-      context.canvas.drawPath(
-        getPiecePathCustom(
-          size,
-          strokeWidth + offset.dx + offsetX,
-          offset.dy + createY,
-          sizeCaptChar,
-        ),
-        paint..style = PaintingStyle.stroke,
-      );
-    }
+    context.canvas.drawPath(
+      getPiecePathCustom(
+        size,
+        strokeWidth + offset.dx + offsetX,
+        offset.dy + createY,
+        sizeCaptChar,
+      ),
+      paint..style = PaintingStyle.stroke,
+    );
 
     layer = context.pushClipPath(
       needsCompositing,
+
       /// Move về đầu [-create] và trược theo offsetX
       Offset(-createX + offsetX + offset.dx + strokeWidth, offset.dy),
       Offset.zero & size,
@@ -372,5 +350,28 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       },
       oldLayer: layer as ClipPathLayer?,
     );
+  }
+
+  @override
+  void performLayout() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      /// tam fix
+      if (createX != 0 && createY != 0) return;
+      create();
+    });
+
+    super.performLayout();
+  }
+
+  Offset? create() {
+    if (size == Size.zero) {
+      return null;
+    }
+    createX = sizeCaptChar +
+        Random().nextInt((size.width - 2.5 * sizeCaptChar).toInt());
+
+    createY = 0.0 + Random().nextInt((size.height - sizeCaptChar).toInt());
+
+    return Offset(createX, createY);
   }
 }
