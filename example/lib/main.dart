@@ -46,9 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             colorBar: Colors.blue,
             colorCaptChar: Colors.blue,
-            onConfirm: (value) {
+            onConfirm: (value) async {
               debugPrint(value.toString());
-              Future.delayed(const Duration(seconds: 1)).then(
+              return await Future.delayed(const Duration(seconds: 5)).then(
                 (value) {
                   controller.create();
                 },

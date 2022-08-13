@@ -24,7 +24,7 @@ class SliderCaptcha extends StatefulWidget {
 
   final Image image;
 
-  final void Function(bool value)? onConfirm;
+  final Future<void> Function(bool value)? onConfirm;
 
   final String title;
 
@@ -51,6 +51,10 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   double answerX = 0;
 
   double answerY = 0;
+
+  /// Khi [confirm] đang thực thiện thì lock =true -> Không cho controller trược
+  /// nữa
+  bool isLock = false;
 
   late SliderController controller;
   late final SliderController _controller = SliderController();
@@ -103,8 +107,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                   height: 50,
                   width: 50,
                   child: GestureDetector(
-                    onHorizontalDragStart: (detail) =>
-                        _onDragStart(context, detail),
+                    onHorizontalDragStart: (detail) => _onDragStart(context, detail),
                     onHorizontalDragUpdate: (DragUpdateDetails detail) {
                       _onDragUpdate(context, detail);
                     },
@@ -134,7 +137,9 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     );
   }
 
-  _onDragStart(BuildContext context, DragStartDetails start) {
+  void _onDragStart(BuildContext context, DragStartDetails start) {
+    if (isLock) return;
+    debugPrint(isLock.toString());
     RenderBox getBox = context.findRenderObject() as RenderBox;
 
     var local = getBox.globalToLocal(start.globalPosition);
@@ -145,6 +150,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   }
 
   _onDragUpdate(BuildContext context, DragUpdateDetails update) {
+    if (isLock) return;
     RenderBox getBox = context.findRenderObject() as RenderBox;
     var local = getBox.globalToLocal(update.globalPosition);
 
@@ -192,9 +198,20 @@ class _SliderCaptchaState extends State<SliderCaptcha>
           animationController.reset();
         }
       });
+
+    animationController.addListener(() {
+      debugPrint(animationController.status.toString());
+    });
     answerX = -100;
     answerX = -100;
   }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
 
   @override
   void didChangeDependencies() {
@@ -207,12 +224,15 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     });
   }
 
-  void checkAnswer() {
+  Future<void> checkAnswer() async {
+    if(isLock) return;
+    isLock = true;
     if (_offsetMove < answerX + 5 && _offsetMove > answerX - 5) {
-      widget.onConfirm?.call(true);
+      await widget.onConfirm?.call(true);
     } else {
-      widget.onConfirm?.call(false);
+      await widget.onConfirm?.call(false);
     }
+    isLock = false;
   }
 
   Offset? reset() {
@@ -281,18 +301,25 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
 }
 
 class _RenderTestSliderCaptChar extends RenderProxyBox {
+
+  /// Kích thước của khối bloc
   double sizeCaptChar = 40;
 
+  /// Kích thước của viền ngoài khối block
   double strokeWidth = 3;
 
+  /// Vị trí đỉnh [dx] của puzzle block
   double offsetX = 0;
 
+  /// Vị trí đỉnh [dy] của puzzle block
   double offsetY = 0;
 
+  /// kết quả: dx
   double createX = 0;
-
+  /// kết quả: dy
   double createY = 0;
 
+  /// màu sắc của khối bloc
   Color colorCaptChar = Colors.black;
 
   @override
@@ -363,6 +390,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
     super.performLayout();
   }
 
+  /// Hàm khởi tạo kết quả của khối bloc
   Offset? create() {
     if (size == Size.zero) {
       return null;
