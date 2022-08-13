@@ -8,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,22 +36,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: SliderCaptcha(
-          controller: controller,
-          image: Image.asset(
-            'assets/image.jpeg',
-            fit: BoxFit.fitWidth,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: SliderCaptcha(
+            controller: controller,
+            image: Image.asset(
+              'assets/image.jpeg',
+              fit: BoxFit.fitWidth,
+            ),
+            colorBar: Colors.blue,
+            colorCaptChar: Colors.blue,
+            onConfirm: (value) {
+              debugPrint(value.toString());
+              Future.delayed(const Duration(seconds: 1)).then(
+                (value) {
+                  controller.create();
+                },
+              );
+            },
           ),
-          colorBar: Colors.blue,
-          colorCaptChar: Colors.blue,
-          onConfirm: (value) {
-            debugPrint(value.toString());
-            Future.delayed(const Duration(seconds: 1)).then(
-              (value) {
-                controller.create();
-              },
-            );
-          },
         ),
       ),
     );

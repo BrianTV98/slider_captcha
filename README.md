@@ -19,7 +19,6 @@ Authentication by image
           colorBar: Colors.blue,
           colorCaptChar: Colors.blue,
           onConfirm: (value) {
-            debugPrint(value.toString());
             Future.delayed(const Duration(seconds: 1)).then(
               (value) {
                 controller.create();
