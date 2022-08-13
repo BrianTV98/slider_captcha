@@ -43,4 +43,6 @@ TODO
 ## 0.1.5
 TODO
 - fix bug/  Fix bug Puzzle block position out of vertical picture size
-
+## 0.1.6
+TODO
+- Lock controller when checkAnswer 
