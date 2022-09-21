@@ -139,7 +139,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
   void _onDragStart(BuildContext context, DragStartDetails start) {
     if (isLock) return;
-    debugPrint(isLock.toString());
     RenderBox getBox = context.findRenderObject() as RenderBox;
 
     var local = getBox.globalToLocal(start.globalPosition);
@@ -180,7 +179,9 @@ class _SliderCaptchaState extends State<SliderCaptcha>
       controller = widget.controller!;
     }
 
-    controller.create = reset;
+    controller.create = create;
+
+
 
     animationController = AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -199,11 +200,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         }
       });
 
-    animationController.addListener(() {
-      debugPrint(animationController.status.toString());
-    });
-    answerX = -100;
-    answerX = -100;
   }
 
   @override
@@ -215,6 +211,9 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
   @override
   void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp){
+      controller.create.call();
+    });
     super.didChangeDependencies();
   }
 
@@ -227,7 +226,8 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   Future<void> checkAnswer() async {
     if(isLock) return;
     isLock = true;
-    if (_offsetMove < answerX + 5 && _offsetMove > answerX - 5) {
+
+    if (_offsetMove < answerX + 10 && _offsetMove > answerX - 10) {
       await widget.onConfirm?.call(true);
     } else {
       await widget.onConfirm?.call(false);
@@ -235,7 +235,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     isLock = false;
   }
 
-  Offset? reset() {
+  Offset? create() {
     animationController.forward().then((value) {
       Offset? offset = _controller.create.call();
       answerX = offset?.dx ?? 0;
@@ -328,9 +328,9 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     /// Vẽ hình background.
     context.paintChild(child!, offset);
-
     /// Khử trường hợp ảnh bị giật khi sử dụng WidgetsBinding.instance.addPostFrameCallback
     if (!(child!.size.width > 0 && child!.size.height > 0)) {
+
       return;
     }
 
@@ -339,6 +339,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       ..strokeWidth = strokeWidth;
 
     if (createX == 0 && createY == 0) return;
+
 
     context.canvas.drawPath(
       getPiecePathCustom(
@@ -352,7 +353,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     context.canvas.drawPath(
       getPiecePathCustom(
-        size,
+        Size(size.width- strokeWidth, size.height - strokeWidth),
         strokeWidth + offset.dx + offsetX,
         offset.dy + createY,
         sizeCaptChar,
@@ -381,17 +382,19 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   @override
   void performLayout() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      /// tam fix
-      if (createX != 0 && createY != 0) return;
-      create();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   /// tam fix
+    //   if (createX != 0 && createY != 0) return;
+    //   create();
+    //   markNeedsPaint();
+    // });
 
     super.performLayout();
   }
 
   /// Hàm khởi tạo kết quả của khối bloc
   Offset? create() {
+
     if (size == Size.zero) {
       return null;
     }
@@ -399,6 +402,8 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
         Random().nextInt((size.width - 2.5 * sizeCaptChar).toInt());
 
     createY = 0.0 + Random().nextInt((size.height - sizeCaptChar).toInt());
+
+    markNeedsPaint();
 
     return Offset(createX, createY);
   }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PuzzlePiecePainter extends CustomPainter {
-  PuzzlePiecePainter(this.width, this.height, this.offsetX, this.offsetY,
-      {this.paintingStyle = PaintingStyle.stroke});
+  PuzzlePiecePainter(
+    this.width,
+    this.height,
+    this.offsetX,
+    this.offsetY, {
+    this.paintingStyle = PaintingStyle.stroke,
+  });
 
   final double width;
 
