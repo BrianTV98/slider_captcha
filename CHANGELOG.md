@@ -46,3 +46,6 @@ TODO
 ## 0.1.6
 TODO
 - Lock controller when checkAnswer 
+## 0.1.7
+TODO
+- fix/issue17: don't show block at first time
