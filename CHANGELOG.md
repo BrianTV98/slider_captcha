@@ -49,3 +49,7 @@ TODO
 ## 0.1.7
 TODO
 - fix/issue17: don't show block at first time
+
+## 0.1.8
+TODO
+- fix/captcha beyond the bound when drag
