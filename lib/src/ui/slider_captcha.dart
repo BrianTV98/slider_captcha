@@ -19,8 +19,10 @@ class SliderCaptcha extends StatefulWidget {
     this.colorBar = Colors.red,
     this.colorCaptChar = Colors.blue,
     this.controller,
+    this.borderImager = 0,
     Key? key,
-  }) : super(key: key);
+  })  : assert(0 <= borderImager && borderImager <= 5),
+        super(key: key);
 
   final Image image;
 
@@ -37,6 +39,9 @@ class SliderCaptcha extends StatefulWidget {
   final double captchaSize;
 
   final SliderController? controller;
+
+  /// to make sure no problems arise, borderImage only allows sheet limit 0 -> 5
+  final double borderImager;
 
   @override
   State<SliderCaptcha> createState() => _SliderCaptchaState();
@@ -71,12 +76,15 @@ class _SliderCaptchaState extends State<SliderCaptcha>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TestSliderCaptChar(
-            widget.image,
-            _offsetMove,
-            answerY,
-            colorCaptChar: widget.colorCaptChar,
-            sliderController: _controller,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(widget.borderImager),
+            child: TestSliderCaptChar(
+              widget.image,
+              _offsetMove,
+              answerY,
+              colorCaptChar: widget.colorCaptChar,
+              sliderController: _controller,
+            ),
           ),
           Container(
             height: heightSliderBar,
@@ -107,7 +115,8 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                   height: 50,
                   width: 50,
                   child: GestureDetector(
-                    onHorizontalDragStart: (detail) => _onDragStart(context, detail),
+                    onHorizontalDragStart: (detail) =>
+                        _onDragStart(context, detail),
                     onHorizontalDragUpdate: (DragUpdateDetails detail) {
                       _onDragUpdate(context, detail);
                     },
@@ -181,8 +190,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
     controller.create = create;
 
-
-
     animationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -199,7 +206,6 @@ class _SliderCaptchaState extends State<SliderCaptcha>
           animationController.reset();
         }
       });
-
   }
 
   @override
@@ -208,10 +214,9 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     super.dispose();
   }
 
-
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp){
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.create.call();
     });
     super.didChangeDependencies();
@@ -224,7 +229,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
   }
 
   Future<void> checkAnswer() async {
-    if(isLock) return;
+    if (isLock) return;
     isLock = true;
 
     if (_offsetMove < answerX + 10 && _offsetMove > answerX - 10) {
@@ -301,7 +306,6 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
 }
 
 class _RenderTestSliderCaptChar extends RenderProxyBox {
-
   /// Kích thước của khối bloc
   double sizeCaptChar = 40;
 
@@ -316,6 +320,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   /// kết quả: dx
   double createX = 0;
+
   /// kết quả: dy
   double createY = 0;
 
@@ -328,9 +333,9 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     /// Vẽ hình background.
     context.paintChild(child!, offset);
+
     /// Khử trường hợp ảnh bị giật khi sử dụng WidgetsBinding.instance.addPostFrameCallback
     if (!(child!.size.width > 0 && child!.size.height > 0)) {
-
       return;
     }
 
@@ -339,7 +344,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
       ..strokeWidth = strokeWidth;
 
     if (createX == 0 && createY == 0) return;
-
 
     context.canvas.drawPath(
       getPiecePathCustom(
@@ -353,7 +357,7 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
     context.canvas.drawPath(
       getPiecePathCustom(
-        Size(size.width- strokeWidth, size.height - strokeWidth),
+        Size(size.width - strokeWidth, size.height - strokeWidth),
         strokeWidth + offset.dx + offsetX,
         offset.dy + createY,
         sizeCaptChar,
@@ -394,7 +398,6 @@ class _RenderTestSliderCaptChar extends RenderProxyBox {
 
   /// Hàm khởi tạo kết quả của khối bloc
   Offset? create() {
-
     if (size == Size.zero) {
       return null;
     }
