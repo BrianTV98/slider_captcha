@@ -225,7 +225,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       controller.create.call();
     });
     super.didChangeDependencies();
