@@ -41,7 +41,7 @@ class SliderCaptcha extends StatefulWidget {
 
   final SliderController? controller;
 
-  /// Adds space between the captcha image and the slide button bar. 
+  /// Adds space between the captcha image and the slide button bar.
   /// Defaults is 0
   final double imageToBarPadding;
 
@@ -223,9 +223,11 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     super.dispose();
   }
 
+  WidgetsBinding? _widgetsBinding() => WidgetsBinding.instance;
+
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    _widgetsBinding()?.addPostFrameCallback((timeStamp) {
       controller.create.call();
     });
     super.didChangeDependencies();
