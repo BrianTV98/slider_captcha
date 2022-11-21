@@ -20,6 +20,7 @@ class SliderCaptcha extends StatefulWidget {
     this.colorCaptChar = Colors.blue,
     this.controller,
     this.borderImager = 0,
+    this.imageToBarPadding = 0,
     Key? key,
   })  : assert(0 <= borderImager && borderImager <= 5),
         super(key: key);
@@ -39,6 +40,10 @@ class SliderCaptcha extends StatefulWidget {
   final double captchaSize;
 
   final SliderController? controller;
+
+  /// Adds space between the captcha image and the slide button bar. 
+  /// Defaults is 0
+  final double imageToBarPadding;
 
   /// to make sure no problems arise, borderImage only allows sheet limit 0 -> 5
   final double borderImager;
@@ -89,6 +94,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
               ),
             ),
           ),
+          SizedBox(height: widget.imageToBarPadding),
           Container(
             height: heightSliderBar,
             width: double.infinity,
