@@ -73,17 +73,20 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(widget.borderImager),
-            child: TestSliderCaptChar(
-              widget.image,
-              _offsetMove,
-              answerY,
-              colorCaptChar: widget.colorCaptChar,
-              sliderController: _controller,
+          Flexible(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(widget.borderImager),
+              child: TestSliderCaptChar(
+                widget.image,
+                _offsetMove,
+                answerY,
+                colorCaptChar: widget.colorCaptChar,
+                sliderController: _controller,
+              ),
             ),
           ),
           Container(
