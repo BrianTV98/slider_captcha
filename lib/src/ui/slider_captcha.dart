@@ -20,9 +20,11 @@ class SliderCaptcha extends StatefulWidget {
     this.colorCaptChar = Colors.blue,
     this.controller,
     this.borderImager = 0,
-    this.imageToBarPadding = 0,
+    this.space = 0,
+    this.fixHeightParent = false,
     Key? key,
   })  : assert(0 <= borderImager && borderImager <= 5),
+        assert((fixHeightParent && space == 0) || !fixHeightParent),
         super(key: key);
 
   final Image image;
@@ -41,9 +43,12 @@ class SliderCaptcha extends StatefulWidget {
 
   final SliderController? controller;
 
+  final bool fixHeightParent;
+
   /// Adds space between the captcha image and the slide button bar.
-  /// Defaults is 0
-  final double imageToBarPadding;
+  /// Defaults is 0,
+  /// if fixHeight with parent is space  = 0 ;
+  final double space;
 
   /// to make sure no problems arise, borderImage only allows sheet limit 0 -> 5
   final double borderImager;
@@ -78,23 +83,14 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: widget.fixHeightParent
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: widget.fixHeightParent? MainAxisSize.max:MainAxisSize.min,
         children: [
-          Flexible(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(widget.borderImager),
-              child: TestSliderCaptChar(
-                widget.image,
-                _offsetMove,
-                answerY,
-                colorCaptChar: widget.colorCaptChar,
-                sliderController: _controller,
-              ),
-            ),
-          ),
-          SizedBox(height: widget.imageToBarPadding),
+          _buildImage(),
+          _buildSpace(),
           Container(
             height: heightSliderBar,
             width: double.infinity,
@@ -259,11 +255,46 @@ class _SliderCaptchaState extends State<SliderCaptcha>
     });
     return null;
   }
+
+  _buildSpace() {
+    if (widget.fixHeightParent) {
+      return SizedBox();
+    }
+    return SizedBox(height: widget.space);
+  }
+
+  _buildImage() {
+    if (widget.fixHeightParent) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(widget.borderImager),
+        child: SliderCaptCharComponent(
+          widget.image,
+          _offsetMove,
+          answerY,
+          colorCaptChar: widget.colorCaptChar,
+          sliderController: _controller,
+        ),
+      );
+    }
+
+    return Flexible(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(widget.borderImager),
+        child: SliderCaptCharComponent(
+          widget.image,
+          _offsetMove,
+          answerY,
+          colorCaptChar: widget.colorCaptChar,
+          sliderController: _controller,
+        ),
+      ),
+    );
+  }
 }
 
 typedef SliderCreate = Offset? Function();
 
-class TestSliderCaptChar extends SingleChildRenderObjectWidget {
+class SliderCaptCharComponent extends SingleChildRenderObjectWidget {
   ///Hình ảnh góc
   final Image image;
 
@@ -281,7 +312,7 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
 
   final SliderController sliderController;
 
-  const TestSliderCaptChar(
+  const SliderCaptCharComponent(
     this.image,
     this.offsetX,
     this.offsetY, {

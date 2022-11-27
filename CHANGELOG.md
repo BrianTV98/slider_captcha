@@ -53,3 +53,7 @@ TODO
 ## 0.1.8
 TODO
 - fix/captcha beyond the bound when drag
+
+## 0.1.9
+- update/allow padding betwent image and controller 
+- support flutter 2.x.x 

@@ -34,7 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Slider CaptChar'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -46,9 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             colorBar: Colors.blue,
             colorCaptChar: Colors.blue,
+            space: 10,
+            fixHeightParent: false,
             onConfirm: (value) async {
               debugPrint(value.toString());
-              return await Future.delayed(const Duration(seconds: 5)).then(
+              return await Future.delayed(const Duration(seconds: 1)).then(
                 (value) {
                   controller.create.call();
                 },
