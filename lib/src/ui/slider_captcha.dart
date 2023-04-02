@@ -21,11 +21,12 @@ class SliderCaptcha extends StatefulWidget {
     this.controller,
     this.borderImager = 0,
     this.imageToBarPadding = 0,
+    this.icon,
     Key? key,
   })  : assert(0 <= borderImager && borderImager <= 5),
         super(key: key);
 
-  final Image image;
+  final Widget image;
 
   final Future<void> Function(bool value)? onConfirm;
 
@@ -38,6 +39,8 @@ class SliderCaptcha extends StatefulWidget {
   final Color colorCaptChar;
 
   final double captchaSize;
+
+  final Widget? icon;
 
   final SliderController? controller;
 
@@ -143,7 +146,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                           BoxShadow(color: Colors.grey, blurRadius: 4)
                         ],
                       ),
-                      child: const Icon(Icons.arrow_forward_rounded),
+                      child: widget.icon??const Icon(Icons.arrow_forward_rounded),
                     ),
                   ),
                 ),
@@ -265,7 +268,7 @@ typedef SliderCreate = Offset? Function();
 
 class TestSliderCaptChar extends SingleChildRenderObjectWidget {
   ///Hình ảnh góc
-  final Image image;
+  final Widget image;
 
   /// Vị trí dx slider captChar
   final double offsetX;
