@@ -58,6 +58,6 @@ TODO
 update/allow padding betwent image and controller
 support flutter 2.x.x
 
-## 0.2.10
+## 0.1.10
 update/ allow change icon slider
 update/ allow change image to widget 
