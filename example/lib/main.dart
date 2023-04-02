@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             colorBar: Colors.blue,
             colorCaptChar: Colors.blue,
+            icon: Icon(Icons.add),
             onConfirm: (value) async {
               debugPrint(value.toString());
               return await Future.delayed(const Duration(seconds: 5)).then(
