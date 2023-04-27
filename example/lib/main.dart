@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const SliderCaptchaServerVerify()),
-      home: const SliderCaptchaClientVerify(title: 'Slider to verify')),
-    );
+      home: const SliderCaptchaClientVerify(title: 'Slider to verify'));
   }
 }
