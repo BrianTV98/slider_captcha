@@ -1,4 +1,7 @@
+import 'package:example/provider/slider_captchar_provider.dart';
+import 'package:example/slider_captchar_client.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:slider_captcha/slider_capchar.dart';
 
 void main() {
@@ -10,12 +13,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (_)=> SliderCaptcharProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home:  SliderCaptcharClientDemo()
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

@@ -88,7 +88,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
           Flexible(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(widget.borderImager),
-              child: TestSliderCaptChar(
+              child: SliderCaptCha(
                 widget.image,
                 _offsetMove,
                 answerY,
@@ -266,7 +266,7 @@ class _SliderCaptchaState extends State<SliderCaptcha>
 
 typedef SliderCreate = Offset? Function();
 
-class TestSliderCaptChar extends SingleChildRenderObjectWidget {
+class SliderCaptCha extends SingleChildRenderObjectWidget {
   ///Hình ảnh góc
   final Widget image;
 
@@ -284,7 +284,7 @@ class TestSliderCaptChar extends SingleChildRenderObjectWidget {
 
   final SliderController sliderController;
 
-  const TestSliderCaptChar(
+  const SliderCaptCha(
     this.image,
     this.offsetX,
     this.offsetY, {
