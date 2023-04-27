@@ -54,6 +54,14 @@ TODO
 TODO
 - fix/captcha beyond the bound when drag
 
+## 0.1.9 
+update/allow padding betwent image and controller
+support flutter 2.x.x
+
+## 0.1.10
+update/ allow change icon slider
+update/ allow change image to widget 
+
 ## 1.0.0
 TODO
 - add slider_captcha_client to verify with server

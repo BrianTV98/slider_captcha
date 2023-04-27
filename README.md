@@ -45,8 +45,9 @@ Slider Captcha verify with server:
         },
     ),
 ```
+
 How to implement server:
-  reference: https://github.com/BrianTV98/slider_captcha_server/tree/trunk
+  reference:[github](https://github.com/BrianTV98/slider_captcha_server/tree/trunk)
 
 Thank you [i5hi](https://github.com/i5hi) recommended and supported 'verify by server' feature.
 
