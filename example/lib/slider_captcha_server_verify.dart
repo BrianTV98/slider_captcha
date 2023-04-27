@@ -1,17 +1,17 @@
-import 'package:example/provider/slider_captchar_provider.dart';
+import 'package:example/provider/slider_captcha_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slider_captcha/slider_capchar.dart';
 
-class SliderCaptchaClientDemo extends StatefulWidget {
-  const SliderCaptchaClientDemo({Key? key}) : super(key: key);
+class SliderCaptchaServerVerify extends StatefulWidget {
+  const SliderCaptchaServerVerify({Key? key}) : super(key: key);
 
   @override
-  State<SliderCaptchaClientDemo> createState() =>
-      _SliderCaptchaClientDemoState();
+  State<SliderCaptchaServerVerify> createState() =>
+      _SliderCaptchaServerVerifyState();
 }
 
-class _SliderCaptchaClientDemoState extends State<SliderCaptchaClientDemo> {
+class _SliderCaptchaServerVerifyState extends State<SliderCaptchaServerVerify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

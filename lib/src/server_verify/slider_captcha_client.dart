@@ -46,7 +46,7 @@ class _SliderCaptchaClientState extends State<SliderCaptchaClient>
       key: Key('FutureBuilder'),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return SliderCaptchaComponent(
+          return _SliderCaptchaComponent(
             widget.provider,
             titleSlider,
             titleStyle,
@@ -59,8 +59,8 @@ class _SliderCaptchaClientState extends State<SliderCaptchaClient>
   }
 }
 
-class SliderCaptchaComponent extends StatefulWidget {
-  const SliderCaptchaComponent(
+class _SliderCaptchaComponent extends StatefulWidget {
+  const _SliderCaptchaComponent(
       this.provider, this.title, this.titleStyle, this.onConfirm,
       {Key? key})
       : super(key: key);
@@ -74,10 +74,11 @@ class SliderCaptchaComponent extends StatefulWidget {
   final Future<void> Function(double value) onConfirm;
 
   @override
-  State<SliderCaptchaComponent> createState() => _SliderCaptchaComponentState();
+  State<_SliderCaptchaComponent> createState() =>
+      _SliderCaptchaComponentState();
 }
 
-class _SliderCaptchaComponentState extends State<SliderCaptchaComponent>
+class _SliderCaptchaComponentState extends State<_SliderCaptchaComponent>
     with SingleTickerProviderStateMixin {
   Size sizeImage = Size(0, 0);
 
@@ -119,7 +120,7 @@ class _SliderCaptchaComponentState extends State<SliderCaptchaComponent>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SliderCaptchaRenderObject(
+        _SliderCaptchaRenderObject(
           widget.provider.puzzleImage!,
           widget.provider.pieceImage!,
           widget.provider.coordinatesY,
@@ -235,13 +236,13 @@ class _SliderCaptchaComponentState extends State<SliderCaptchaComponent>
   }
 }
 
-class SliderCaptchaRenderObject extends MultiChildRenderObjectWidget {
+class _SliderCaptchaRenderObject extends MultiChildRenderObjectWidget {
   final Image image;
   final Image piece;
   final double percent;
   final double offsetMove;
 
-  SliderCaptchaRenderObject(
+  _SliderCaptchaRenderObject(
     this.image,
     this.piece,
     this.percent,

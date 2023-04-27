@@ -53,3 +53,7 @@ TODO
 ## 0.1.8
 TODO
 - fix/captcha beyond the bound when drag
+
+## 1.0.0
+TODO
+- add slider_captcha_client to verify with server

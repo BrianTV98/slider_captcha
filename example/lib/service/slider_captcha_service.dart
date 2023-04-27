@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../model/captchar_model.dart';
+import '../model/captcha_model.dart';
 
 class SliderCaptchaService {
   Future<CaptchaModel?> getCaptcha() async {
