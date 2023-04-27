@@ -146,7 +146,8 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                           BoxShadow(color: Colors.grey, blurRadius: 4)
                         ],
                       ),
-                      child: widget.icon??const Icon(Icons.arrow_forward_rounded),
+                      child: widget.icon ??
+                          const Icon(Icons.arrow_forward_rounded),
                     ),
                   ),
                 ),

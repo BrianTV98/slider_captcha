@@ -38,6 +38,8 @@ dependencies:
   cached_network_image: ^3.2.3
   slider_captcha:
     path: ../
+  provider: ^6.0.5
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
