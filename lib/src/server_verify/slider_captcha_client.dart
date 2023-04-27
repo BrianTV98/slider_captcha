@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:slider_captcha/slider_capchar.dart';
+import 'package:slider_captcha/slider_captcha.dart';
 
 class SliderCaptchaClient extends StatefulWidget {
   const SliderCaptchaClient(
@@ -295,7 +293,7 @@ class _RenderTestSliderCaptChar extends RenderBox
   void performLayout() {
     final deflatedConstraints = constraints.deflate(EdgeInsets.zero);
 
-    var pice = childAfter(firstChild!);
+    // var pice = childAfter(firstChild!);
     for (var child = firstChild; child != null; child = childAfter(child)) {
       child.layout(deflatedConstraints, parentUsesSize: true);
     }

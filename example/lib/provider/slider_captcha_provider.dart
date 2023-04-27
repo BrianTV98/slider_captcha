@@ -1,6 +1,6 @@
 import 'package:example/service/slider_captcha_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:slider_captcha/slider_capchar.dart';
+import 'package:slider_captcha/slider_captcha.dart';
 
 import '../model/captcha_model.dart';
 

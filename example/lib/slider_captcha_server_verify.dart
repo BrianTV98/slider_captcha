@@ -1,7 +1,7 @@
 import 'package:example/provider/slider_captcha_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:slider_captcha/slider_capchar.dart';
+import 'package:slider_captcha/slider_captcha.dart';
 
 class SliderCaptchaServerVerify extends StatefulWidget {
   const SliderCaptchaServerVerify({Key? key}) : super(key: key);

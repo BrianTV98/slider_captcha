@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slider_captcha/slider_capchar.dart';
+import 'package:slider_captcha/slider_captcha.dart';
 
 class SliderCaptchaClientVerify extends StatefulWidget {
   const SliderCaptchaClientVerify({Key? key, required this.title})
