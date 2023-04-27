@@ -111,9 +111,7 @@ class _SliderCaptchaComponentState extends State<SliderCaptchaComponent>
   @override
   void dispose() {
     // TODO: implement dispose
-
     animationController.dispose();
-
     super.dispose();
   }
 
@@ -132,6 +130,7 @@ class _SliderCaptchaComponentState extends State<SliderCaptchaComponent>
     );
   }
 
+  /// You can customize the sliderBar here
   Widget sliderBar() => Container(
         height: 50,
         width: double.infinity,
@@ -253,16 +252,14 @@ class SliderCaptchaRenderObject extends MultiChildRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     var renderObject = _RenderTestSliderCaptChar(percent, offsetMove);
-    renderObject.offsetMove =
-        offsetMove * MediaQuery.of(context).devicePixelRatio;
+    renderObject.offsetMove = offsetMove;
     return renderObject;
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderObject renderObject) {
-    (renderObject as _RenderTestSliderCaptChar).offsetMove =
-        offsetMove * MediaQuery.of(context).devicePixelRatio;
+    (renderObject as _RenderTestSliderCaptChar).offsetMove = offsetMove;
   }
 }
 
@@ -284,11 +281,12 @@ class _RenderTestSliderCaptChar extends RenderBox
     if (firstChild == null) return;
 
     if (piece == null) return;
-    context.paintChild(firstChild!, Offset(0, 0));
+    context.paintChild(firstChild!, offset);
 
     context.paintChild(
       piece,
-      Offset(offset.dx + offsetMove, (firstChild?.size.height ?? 0)) * percent,
+      Offset(offset.dx + offsetMove,
+          offset.dy + (firstChild?.size.height ?? 0) * percent),
     );
   }
 

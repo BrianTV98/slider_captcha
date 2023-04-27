@@ -14,5 +14,6 @@ class SliderCaptchaService {
       var result = CaptchaModel.fromJson(json);
       return result;
     }
+    return null;
   }
 }
