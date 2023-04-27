@@ -1,4 +1,8 @@
+import 'package:example/provider/slider_captcha_provider.dart';
+import 'package:example/slider_captcha_client_verify.dart';
+import 'package:example/slider_captcha_server_verify.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:slider_captcha/slider_capchar.dart';
 
 void main() {
@@ -10,54 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final SliderController controller = SliderController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: SliderCaptcha(
-            controller: controller,
-            image: Image.asset(
-              'assets/image.jpeg',
-              fit: BoxFit.fitWidth,
-            ),
-            colorBar: Colors.blue,
-            colorCaptChar: Colors.blue,
-            icon: Icon(Icons.add),
-            onConfirm: (value) async {
-              debugPrint(value.toString());
-              return await Future.delayed(const Duration(seconds: 5)).then(
-                (value) {
-                  controller.create.call();
-                },
-              );
-            },
-          ),
-        ),
-      ),
+      // home: const SliderCaptchaServerVerify()),
+      home: const SliderCaptchaClientVerify(title: 'Slider to verify')),
     );
   }
 }
