@@ -35,8 +35,11 @@ class SliderCaptchaClientProvider {
   final double coordinatesY;
 
   /// Provides Image information from the original base64 data
-  SliderCaptchaClientProvider(
-      this.puzzleBase64, this.pieceBase64, this.coordinatesY) {
+  SliderCaptchaClientProvider({
+    required this.puzzleBase64,
+    required this.pieceBase64,
+    required this.coordinatesY,
+  }) {
     puzzleUnit8List = Base64Decoder().convert(puzzleBase64);
     pieceUnit8List = Base64Decoder().convert(pieceBase64);
   }

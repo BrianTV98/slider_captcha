@@ -1,3 +1,4 @@
+import 'package:example/slider_captcha_client_verify.dart';
 import 'package:example/slider_captcha_server_verify.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SliderCaptchaServerVerify());
+        home: const SliderCaptchaClientVerify(title: 'SliderCaptchaClientVerify',)
+    );
     // home: const SliderCaptchaClientVerify(title: 'Slider to verify'));
   }
 }
