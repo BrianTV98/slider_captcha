@@ -23,16 +23,22 @@ class _SliderCaptchaServerVerifyState extends State<SliderCaptchaServerVerify> {
               return const CircularProgressIndicator();
             }
             return SafeArea(
-              child: SliderCaptchaClient(
-                provider: SliderCaptchaClientProvider(
-                    value.captcha?.puzzleImage ?? '',
-                    value.captcha?.pieceImage ?? '',
-                    value.captcha?.y ?? 0),
-                onConfirm: (value) async {
-                  /// Can you verify captcha at here
-                  await Future.delayed(const Duration(seconds: 1));
-                  debugPrint(value.toString());
-                },
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 600,
+                  maxHeight: 600,
+                ),
+                child: SliderCaptchaClient(
+                  provider: SliderCaptchaClientProvider(
+                      value.captcha?.puzzleImage ?? '',
+                      value.captcha?.pieceImage ?? '',
+                      value.captcha?.y ?? 0),
+                  onConfirm: (value) async {
+                    /// Can you verify captcha at here
+                    await Future.delayed(const Duration(seconds: 1));
+                    debugPrint(value.toString());
+                  },
+                ),
               ),
             );
           },
