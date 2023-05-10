@@ -21,6 +21,7 @@ class SliderCaptcha extends StatefulWidget {
     this.controller,
     this.borderImager = 0,
     this.imageToBarPadding = 0,
+    this.slideContainerDecoration,
     this.icon,
     Key? key,
   })  : assert(0 <= borderImager && borderImager <= 5),
@@ -41,6 +42,9 @@ class SliderCaptcha extends StatefulWidget {
   final double captchaSize;
 
   final Widget? icon;
+
+  /// Allows the dev to customize slideContainer if specified.
+  final Decoration? slideContainerDecoration;
 
   final SliderController? controller;
 
@@ -139,13 +143,14 @@ class _SliderCaptchaState extends State<SliderCaptcha>
                       height: heightSliderBar,
                       width: heightSliderBar,
                       margin: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white,
-                        boxShadow: const <BoxShadow>[
-                          BoxShadow(color: Colors.grey, blurRadius: 4)
-                        ],
-                      ),
+                      decoration: widget.slideContainerDecoration ??
+                          BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                            boxShadow: const <BoxShadow>[
+                              BoxShadow(color: Colors.grey, blurRadius: 4)
+                            ],
+                          ),
                       child: widget.icon ??
                           const Icon(Icons.arrow_forward_rounded),
                     ),
